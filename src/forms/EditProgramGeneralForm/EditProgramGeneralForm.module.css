@@ -33,7 +33,8 @@
 
 .programTags,
 .description,
-.programDifficulties {
+.programDifficulties,
+.hours {
   composes: formMargins;
   flex-shrink: 0;
 }

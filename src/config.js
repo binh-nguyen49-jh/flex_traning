@@ -197,6 +197,14 @@ const maps = {
   },
 };
 
+const CUSTOM_HOUR = 'custom';
+const hoursChoices = [
+  { label: '2 hours', value: '2' },
+  { label: '4 hours', value: '4' },
+  { label: '8 hours', value: '8' },
+  { label: 'Custom hours', value: CUSTOM_HOUR },
+];
+
 // NOTE: only expose configuration that should be visible in the
 // client side, don't add any server secrets in this file.
 const config = {
@@ -240,6 +248,8 @@ const config = {
   usingSSL,
   maps,
   custom,
+  hoursChoices,
+  CUSTOM_HOUR,
 };
 
 export default config;
