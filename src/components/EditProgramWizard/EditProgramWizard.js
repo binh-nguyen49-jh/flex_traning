@@ -28,6 +28,7 @@ import EditProgramWizardTab, {
   PHOTOS,
 } from './EditProgramWizardTab';
 import css from './EditProgramWizard.module.css';
+import { ONLINE } from '../../marketplace-custom-config';
 
 // Show availability calendar only if environment variable availabilityEnabled is true
 const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
@@ -100,7 +101,11 @@ const tabCompleted = (tab, listing) => {
     case POLICY:
       return !!(publicData && typeof publicData.rules !== 'undefined');
     case LOCATION:
-      return !!(geolocation && publicData && publicData.location && publicData.location.address);
+      return !!(
+        publicData &&
+        publicData.teachingForm &&
+        (publicData.teachingForm === ONLINE || (publicData.location && publicData.location.address))
+      );
     case PRICING:
       return !!price;
     case AVAILABILITY:

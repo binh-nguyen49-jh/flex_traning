@@ -1,5 +1,5 @@
 import React from 'react';
-import { node, string } from 'prop-types';
+import { func, node, string } from 'prop-types';
 import classNames from 'classnames';
 import { Field } from 'react-final-form';
 
@@ -43,6 +43,7 @@ const FieldCheckboxComponent = props => {
     id,
     label,
     useSuccessColor,
+    onClick,
     ...rest
   } = props;
 
@@ -74,6 +75,7 @@ const FieldCheckboxComponent = props => {
               className={css.input}
               {...input}
               onChange={event => handleOnChange(input, event)}
+              onClick={onClick}
             />
           );
         }}
@@ -101,6 +103,7 @@ FieldCheckboxComponent.propTypes = {
   rootClassName: string,
   svgClassName: string,
   textClassName: string,
+  onClick: func,
 
   // Id is needed to connect the label with input.
   id: string.isRequired,

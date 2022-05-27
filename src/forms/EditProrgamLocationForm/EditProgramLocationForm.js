@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { bool, func, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
@@ -10,118 +10,173 @@ import {
   autocompletePlaceSelected,
   composeValidators,
 } from '../../util/validators';
-import { Form, LocationAutocompleteInputField, Button, FieldTextInput } from '../../components';
+import {
+  Form,
+  LocationAutocompleteInputField,
+  Button,
+  FieldTextInput,
+  FieldCheckbox,
+} from '../../components';
 
 import css from './EditProgramLocationForm.module.css';
+import { ONLINE, ONSITE } from '../../marketplace-custom-config';
+import { findOptionsForSelectFilter } from '../../util/search';
+import arrayMutators from 'final-form-arrays';
+import config from '../../config';
 
 const identity = v => v;
 
-export const EditProgramLocationFormComponent = props => (
-  <FinalForm
-    {...props}
-    render={formRenderProps => {
-      const {
-        className,
-        disabled,
-        ready,
-        handleSubmit,
-        intl,
-        invalid,
-        pristine,
-        saveActionMsg,
-        updated,
-        updateInProgress,
-        fetchErrors,
-        values,
-      } = formRenderProps;
+export const EditProgramLocationFormComponent = props => {
+  const { initialValues } = props;
+  const [teachingForm, setTeachingForm] = useState({
+    [ONLINE]: false || initialValues.teachingForm?.includes(ONLINE),
+    [ONSITE]: false || initialValues.teachingForm?.includes(ONSITE),
+  });
 
-      const titleRequiredMessage = intl.formatMessage({ id: 'EditProgramLocationForm.address' });
-      const addressPlaceholderMessage = intl.formatMessage({
-        id: 'EditProgramLocationForm.addressPlaceholder',
-      });
-      const addressRequiredMessage = intl.formatMessage({
-        id: 'EditProgramLocationForm.addressRequired',
-      });
-      const addressNotRecognizedMessage = intl.formatMessage({
-        id: 'EditProgramLocationForm.addressNotRecognized',
-      });
+  const handleClickTeachForm = option => {
+    setTeachingForm(oldTeachingForm => {
+      oldTeachingForm[option.target.value] = !oldTeachingForm[option.target.value];
+      return oldTeachingForm;
+    });
+  };
 
-      const optionalText = intl.formatMessage({
-        id: 'EditProgramLocationForm.optionalText',
-      });
+  return (
+    <FinalForm
+      {...props}
+      mutators={{ ...arrayMutators }}
+      render={formRenderProps => {
+        const {
+          className,
+          disabled,
+          ready,
+          handleSubmit,
+          intl,
+          invalid,
+          pristine,
+          saveActionMsg,
+          updated,
+          updateInProgress,
+          fetchErrors,
+          values,
+        } = formRenderProps;
 
-      const buildingMessage = intl.formatMessage(
-        { id: 'EditProgramLocationForm.building' },
-        { optionalText: optionalText }
-      );
-      const buildingPlaceholderMessage = intl.formatMessage({
-        id: 'EditProgramLocationForm.buildingPlaceholder',
-      });
+        const titleRequiredMessage = intl.formatMessage({ id: 'EditProgramLocationForm.address' });
+        const addressPlaceholderMessage = intl.formatMessage({
+          id: 'EditProgramLocationForm.addressPlaceholder',
+        });
+        const addressRequiredMessage = intl.formatMessage({
+          id: 'EditProgramLocationForm.addressRequired',
+        });
+        const addressNotRecognizedMessage = intl.formatMessage({
+          id: 'EditProgramLocationForm.addressNotRecognized',
+        });
 
-      const { updateListingError, showListingsError } = fetchErrors || {};
-      const errorMessage = updateListingError ? (
-        <p className={css.error}>
-          <FormattedMessage id="EditProgramLocationForm.updateFailed" />
-        </p>
-      ) : null;
+        const optionalText = intl.formatMessage({
+          id: 'EditProgramLocationForm.optionalText',
+        });
 
-      const errorMessageShowListing = showListingsError ? (
-        <p className={css.error}>
-          <FormattedMessage id="EditProgramLocationForm.showListingFailed" />
-        </p>
-      ) : null;
+        const buildingMessage = intl.formatMessage(
+          { id: 'EditProgramLocationForm.building' },
+          { optionalText: optionalText }
+        );
+        const buildingPlaceholderMessage = intl.formatMessage({
+          id: 'EditProgramLocationForm.buildingPlaceholder',
+        });
 
-      const classes = classNames(css.root, className);
-      const submitReady = (updated && pristine) || ready;
-      const submitInProgress = updateInProgress;
-      const submitDisabled = invalid || disabled || submitInProgress;
+        const { updateListingError, showListingsError } = fetchErrors || {};
+        const errorMessage = updateListingError ? (
+          <p className={css.error}>
+            <FormattedMessage id="EditProgramLocationForm.updateFailed" />
+          </p>
+        ) : null;
 
-      return (
-        <Form className={classes} onSubmit={handleSubmit}>
-          {errorMessage}
-          {errorMessageShowListing}
-          <LocationAutocompleteInputField
-            className={css.locationAddress}
-            inputClassName={css.locationAutocompleteInput}
-            iconClassName={css.locationAutocompleteInputIcon}
-            predictionsClassName={css.predictionsRoot}
-            validClassName={css.validLocation}
-            autoFocus
-            name="location"
-            label={titleRequiredMessage}
-            placeholder={addressPlaceholderMessage}
-            useDefaultPredictions={false}
-            format={identity}
-            valueFromForm={values.location}
-            validate={composeValidators(
-              autocompleteSearchRequired(addressRequiredMessage),
-              autocompletePlaceSelected(addressNotRecognizedMessage)
+        const errorMessageShowListing = showListingsError ? (
+          <p className={css.error}>
+            <FormattedMessage id="EditProgramLocationForm.showListingFailed" />
+          </p>
+        ) : null;
+
+        const classes = classNames(css.root, className);
+        const submitReady = (updated && pristine) || ready;
+        const submitInProgress = updateInProgress;
+        const submitDisabled = invalid || disabled || submitInProgress;
+        const options = findOptionsForSelectFilter('programForm', config.custom.filters);
+
+        return (
+          <Form className={classes} onSubmit={handleSubmit}>
+            {errorMessage}
+            {errorMessageShowListing}
+
+            {options.map(option => (
+              <FieldCheckbox
+                id={option.key}
+                name="teachingForm"
+                label={option.label}
+                value={option.key}
+                key={option.key}
+                onClick={handleClickTeachForm}
+              />
+            ))}
+
+            {
+              // // <FieldCheckboxGroup
+              //   className={css.features}
+              //   id="teachingForm"
+              //   name="teachingForm"
+              //   label="Teach Form"
+              //   options={options}
+              //   onChange={e => {
+              //     console.log(e);
+              //   }}
+            }
+
+            {teachingForm[ONSITE] && (
+              <>
+                <LocationAutocompleteInputField
+                  className={css.locationAddress}
+                  inputClassName={css.locationAutocompleteInput}
+                  iconClassName={css.locationAutocompleteInputIcon}
+                  predictionsClassName={css.predictionsRoot}
+                  validClassName={css.validLocation}
+                  autoFocus
+                  name="location"
+                  label={titleRequiredMessage}
+                  placeholder={addressPlaceholderMessage}
+                  useDefaultPredictions={false}
+                  format={identity}
+                  valueFromForm={values.location}
+                  validate={composeValidators(
+                    autocompleteSearchRequired(addressRequiredMessage),
+                    autocompletePlaceSelected(addressNotRecognizedMessage)
+                  )}
+                />
+
+                <FieldTextInput
+                  className={css.building}
+                  type="text"
+                  name="building"
+                  id="building"
+                  label={buildingMessage}
+                  placeholder={buildingPlaceholderMessage}
+                />
+              </>
             )}
-          />
 
-          <FieldTextInput
-            className={css.building}
-            type="text"
-            name="building"
-            id="building"
-            label={buildingMessage}
-            placeholder={buildingPlaceholderMessage}
-          />
-
-          <Button
-            className={css.submitButton}
-            type="submit"
-            inProgress={submitInProgress}
-            disabled={submitDisabled}
-            ready={submitReady}
-          >
-            {saveActionMsg}
-          </Button>
-        </Form>
-      );
-    }}
-  />
-);
+            <Button
+              className={css.submitButton}
+              type="submit"
+              inProgress={submitInProgress}
+              disabled={submitDisabled}
+              ready={submitReady}
+            >
+              {saveActionMsg}
+            </Button>
+          </Form>
+        );
+      }}
+    />
+  );
+};
 
 EditProgramLocationFormComponent.defaultProps = {
   selectedPlace: null,

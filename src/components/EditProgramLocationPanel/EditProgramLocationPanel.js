@@ -5,9 +5,9 @@ import { FormattedMessage } from '../../util/reactIntl';
 import { LISTING_STATE_DRAFT } from '../../util/types';
 import { ensureOwnListing } from '../../util/data';
 import { ListingLink } from '..';
-import { EditListingLocationForm } from '../../forms';
-
+import { ONSITE } from '../../marketplace-custom-config';
 import css from './EditProgramLocationPanel.module.css';
+import EditProgramLocationForm from '../../forms/EditProrgamLocationForm/EditProgramLocationForm';
 
 class EditProgramLocationPanel extends Component {
   constructor(props) {
@@ -31,8 +31,9 @@ class EditProgramLocationPanel extends Component {
       publicData && publicData.location && publicData.location.address && geolocation;
     const location = publicData && publicData.location ? publicData.location : {};
     const { address, building } = location;
-
+    const teachingForm = publicData && publicData.teachingForm;
     return {
+      teachingForm,
       building,
       location: locationFieldsPresent
         ? {
@@ -75,27 +76,45 @@ class EditProgramLocationPanel extends Component {
     return (
       <div className={classes}>
         <h1 className={css.title}>{panelTitle}</h1>
-        <EditListingLocationForm
+        <EditProgramLocationForm
           className={css.form}
           initialValues={this.state.initialValues}
           onSubmit={values => {
-            const { building = '', location } = values;
-            const {
-              selectedPlace: { address, origin },
-            } = location;
-            const updateValues = {
-              geolocation: origin,
-              publicData: {
-                location: { address, building },
-              },
-            };
-            this.setState({
-              initialValues: {
-                building,
-                location: { search: address, selectedPlace: { address, origin } },
-              },
-            });
-            onSubmit(updateValues);
+            const { teachingForm, building = '', location } = values;
+            if (teachingForm.includes(ONSITE)) {
+              const {
+                selectedPlace: { address, origin },
+              } = location;
+              const updateValues = {
+                geolocation: origin,
+                publicData: {
+                  teachingForm,
+                  location: { address, building },
+                },
+              };
+              this.setState({
+                initialValues: {
+                  building,
+                  teachingForm,
+                  location: { search: address, selectedPlace: { address, origin } },
+                },
+              });
+              onSubmit(updateValues);
+            } else {
+              const updateValues = {
+                publicData: {
+                  teachingForm,
+                  location: null,
+                },
+              };
+              this.setState({
+                initialValues: {
+                  teachingForm,
+                  location: null,
+                },
+              });
+              onSubmit(updateValues);
+            }
           }}
           onChange={onChange}
           saveActionMsg={submitButtonText}

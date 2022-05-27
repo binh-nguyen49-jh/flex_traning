@@ -32,6 +32,8 @@
  *         and tie them with correct extended data key
  *         (i.e. pub_<key> or meta_<key>).
  */
+export const ONSITE = 'on-site';
+export const ONLINE = 'online';
 
 export const filters = [
   {
@@ -179,6 +181,33 @@ export const filters = [
         {
           key: 'expert',
           label: 'Expert',
+        },
+      ],
+    },
+  },
+  {
+    id: 'programForm',
+    label: 'Program Form',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['programForm'],
+    config: {
+      // Optional modes: 'has_all', 'has_any'
+      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
+      searchMode: 'has_all',
+
+      // "key" is the option you see in Flex Console.
+      // "label" is set here for this web app's UI only.
+      // Note: label is not added through the translation files
+      // to make filter customizations a bit easier.
+      options: [
+        {
+          key: ONSITE,
+          label: 'On-site',
+        },
+        {
+          key: ONLINE,
+          label: 'Online',
         },
       ],
     },

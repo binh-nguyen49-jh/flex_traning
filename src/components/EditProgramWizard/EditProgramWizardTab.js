@@ -11,9 +11,7 @@ import { ensureListing } from '../../util/data';
 import { createResourceLocatorString } from '../../util/routes';
 import {
   EditListingAvailabilityPanel,
-  EditListingDescriptionPanel,
   EditListingFeaturesPanel,
-  EditListingLocationPanel,
   EditListingPhotosPanel,
   EditListingPoliciesPanel,
   EditListingPricingPanel,
@@ -21,6 +19,7 @@ import {
 
 import css from './EditProgramWizard.module.css';
 import EditProgramGeneralPanel from '../EditProgramGeneralPanel/EditProgramGeneralPanel';
+import EditProgramLocationPanel from '../EditProgramLocationPanel/EditProgramLocationPanel';
 
 export const AVAILABILITY = 'availability';
 export const GENERAL = 'general';
@@ -197,7 +196,7 @@ const EditProgramWizardTab = props => {
         ? 'EditProgramWizard.saveNewLocation'
         : 'EditProgramWizard.saveEditLocation';
       return (
-        <EditListingLocationPanel
+        <EditProgramLocationPanel
           {...panelProps(LOCATION)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
