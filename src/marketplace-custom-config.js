@@ -75,7 +75,7 @@ export const filters = [
   },
   {
     id: 'programTags',
-    label: 'Keyword',
+    label: 'Program Tags',
     type: 'KeywordFilter',
     group: 'secondary',
     // Note: KeywordFilter is fixed filter,
@@ -148,6 +148,37 @@ export const filters = [
         {
           key: 'own_food_allowed',
           label: 'Own food allowed',
+        },
+      ],
+    },
+  },
+  {
+    id: 'programDifficulties',
+    label: 'Program Difficulties',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['programDifficulties'],
+    config: {
+      // Optional modes: 'has_all', 'has_any'
+      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
+      searchMode: 'has_any',
+
+      // "key" is the option you see in Flex Console.
+      // "label" is set here for this web app's UI only.
+      // Note: label is not added through the translation files
+      // to make filter customizations a bit easier.
+      options: [
+        {
+          key: 'beginner',
+          label: 'Beginner',
+        },
+        {
+          key: 'intermediate',
+          label: 'Intermediate',
+        },
+        {
+          key: 'expert',
+          label: 'Expert',
         },
       ],
     },

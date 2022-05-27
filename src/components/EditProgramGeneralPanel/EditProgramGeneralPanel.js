@@ -40,20 +40,29 @@ const EditProgramGeneralPanel = props => {
     <FormattedMessage id="EditProgramGeneralPanel.createListingTitle" />
   );
 
-  const categoryOptions = findOptionsForSelectFilter('category', config.custom.filters);
+  const difficultyOptions = findOptionsForSelectFilter(
+    'programDifficulties',
+    config.custom.filters
+  );
+
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
       <EditProgramGeneralForm
         className={css.form}
-        initialValues={{ title, description, category: publicData.category }}
+        initialValues={{
+          title,
+          description,
+          programTags: publicData.programTags,
+          category: publicData.category,
+        }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { title, description, category } = values;
+          const { title, description, programTags, programDifficulties, category } = values;
           const updateValues = {
             title: title.trim(),
             description,
-            publicData: { category },
+            publicData: { category, programTags, programDifficulties },
           };
 
           onSubmit(updateValues);
@@ -64,7 +73,7 @@ const EditProgramGeneralPanel = props => {
         updated={panelUpdated}
         updateInProgress={updateInProgress}
         fetchErrors={errors}
-        categories={categoryOptions}
+        difficultyOptions={difficultyOptions}
       />
     </div>
   );

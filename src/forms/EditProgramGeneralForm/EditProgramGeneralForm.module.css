@@ -31,7 +31,9 @@
   composes: formMargins;
 }
 
-.programTags {
+.programTags,
+.description,
+.programDifficulties {
   composes: formMargins;
   flex-shrink: 0;
 }

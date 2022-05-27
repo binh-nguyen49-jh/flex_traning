@@ -4,21 +4,27 @@ import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
+import arrayMutators from 'final-form-arrays';
 import { propTypes } from '../../util/types';
-import { maxLength, required, composeValidators } from '../../util/validators';
-import { Form, Button, FieldTextInput } from '../../components';
-import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe';
+import {
+  maxLength,
+  required,
+  composeValidators,
+  requiredFieldArrayCheckbox,
+} from '../../util/validators';
+import { Form, Button, FieldTextInput, FieldCheckboxGroup } from '../../components';
 
 import css from './EditProgramGeneralForm.module.css';
+import { findOptionsForSelectFilter } from '../../util/search';
 
 const TITLE_MAX_LENGTH = 60;
 
 const EditProgramGeneralFormComponent = props => (
   <FinalForm
     {...props}
+    mutators={{ ...arrayMutators }}
     render={formRenderProps => {
       const {
-        categories,
         className,
         disabled,
         ready,
@@ -30,6 +36,7 @@ const EditProgramGeneralFormComponent = props => (
         updated,
         updateInProgress,
         fetchErrors,
+        difficultyOptions,
       } = formRenderProps;
 
       const titleMessage = intl.formatMessage({ id: 'EditProgramGeneralForm.title' });
@@ -46,15 +53,28 @@ const EditProgramGeneralFormComponent = props => (
         }
       );
 
+      const descriptionMessage = intl.formatMessage({
+        id: 'EditProgramGeneralForm.description',
+      });
+      const descriptionPlaceholderMessage = intl.formatMessage({
+        id: 'EditProgramGeneralForm.descriptionPlaceholder',
+      });
+      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
+      const descriptionRequiredMessage = intl.formatMessage({
+        id: 'EditProgramGeneralForm.descriptionRequired',
+      });
+
       const programTagsMessage = intl.formatMessage({
         id: 'EditProgramGeneralForm.programTags',
       });
       const programTagsPlaceholderMessage = intl.formatMessage({
         id: 'EditProgramGeneralForm.programTagsPlaceholder',
       });
-      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
       const programTagsRequiredMessage = intl.formatMessage({
         id: 'EditProgramGeneralForm.programTagsRequired',
+      });
+      const programDifficultyRequiredMessage = intl.formatMessage({
+        id: 'EditProgramGeneralForm.programDifficultyRequired',
       });
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
@@ -100,6 +120,16 @@ const EditProgramGeneralFormComponent = props => (
           />
 
           <FieldTextInput
+            id="description"
+            name="description"
+            className={css.description}
+            type="textarea"
+            label={descriptionMessage}
+            placeholder={descriptionPlaceholderMessage}
+            validate={composeValidators(required(descriptionRequiredMessage))}
+          />
+
+          <FieldTextInput
             id="programTags"
             name="programTags"
             className={css.programTags}
@@ -109,11 +139,13 @@ const EditProgramGeneralFormComponent = props => (
             validate={composeValidators(required(programTagsRequiredMessage))}
           />
 
-          <CustomCategorySelectFieldMaybe
-            id="category"
-            name="category"
-            categories={categories}
-            intl={intl}
+          <FieldCheckboxGroup
+            options={difficultyOptions}
+            className={css.programDifficulties}
+            label="Program Difficulties"
+            id="programDifficulties"
+            name="programDifficulties"
+            validate={requiredFieldArrayCheckbox(programDifficultyRequiredMessage)}
           />
 
           <Button
