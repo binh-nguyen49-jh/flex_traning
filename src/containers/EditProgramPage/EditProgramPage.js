@@ -22,7 +22,7 @@ import {
   getStripeConnectAccountLink,
 } from '../../ducks/stripeConnectAccount.duck';
 
-import { EditProgramWizard, NamedRedirect, Page } from '../../components';
+import { NamedRedirect, Page } from '../../components';
 import { TopbarContainer } from '..';
 
 import {
@@ -41,7 +41,7 @@ import {
 } from './EditProgramPage.duck';
 
 import css from './EditProgramPage.module.css';
-import EditProgramWizardTab from '../../components/EditProgramWizard/EditProgramWizardTab';
+import EditProgramWizard from '../../components/EditProgramWizard/EditProgramWizard';
 
 const STRIPE_ONBOARDING_RETURN_URL_SUCCESS = 'success';
 const STRIPE_ONBOARDING_RETURN_URL_FAILURE = 'failure';
@@ -177,7 +177,7 @@ export const EditProgramPageComponent = props => {
           desktopClassName={css.desktopTopbar}
           mobileClassName={css.mobileTopbar}
         />
-        <EditProgramWizardTab
+        <EditProgramWizard
           id="EditProgramWizard"
           className={css.wizard}
           params={params}

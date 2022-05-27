@@ -129,7 +129,7 @@ const routeConfiguration = () => {
 
     {
       path: '/p/new',
-      name: 'NewListingPage',
+      name: 'NewProgramPage',
       auth: true,
       component: () => (
         <NamedRedirect
