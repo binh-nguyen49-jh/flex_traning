@@ -20,6 +20,7 @@ import {
 import css from './EditProgramWizard.module.css';
 import EditProgramGeneralPanel from '../EditProgramGeneralPanel/EditProgramGeneralPanel';
 import EditProgramLocationPanel from '../EditProgramLocationPanel/EditProgramLocationPanel';
+import EditProgramPricingPanel from '../EditProgramPricingPanel/EditProgramPricingPanel';
 
 export const AVAILABILITY = 'availability';
 export const GENERAL = 'general';
@@ -210,7 +211,7 @@ const EditProgramWizardTab = props => {
         ? 'EditProgramWizard.saveNewPricing'
         : 'EditProgramWizard.saveEditPricing';
       return (
-        <EditListingPricingPanel
+        <EditProgramPricingPanel
           {...panelProps(PRICING)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {

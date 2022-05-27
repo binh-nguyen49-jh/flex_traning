@@ -205,6 +205,13 @@ const hoursChoices = [
   { label: 'Custom hours', value: CUSTOM_HOUR },
 ];
 
+const PACKAGE_PRICE = 'package';
+const HOURLY_PRICE = 'hourly';
+const priceChoices = [
+  { label: 'Package', value: PACKAGE_PRICE },
+  { label: 'Hourly', value: HOURLY_PRICE },
+];
+
 // NOTE: only expose configuration that should be visible in the
 // client side, don't add any server secrets in this file.
 const config = {
@@ -250,6 +257,9 @@ const config = {
   custom,
   hoursChoices,
   CUSTOM_HOUR,
+  priceChoices,
+  PACKAGE_PRICE,
+  HOURLY_PRICE,
 };
 
 export default config;

@@ -67,7 +67,8 @@
 }
 
 .locationAddress,
-.building {
+.building,
+.teachingForm {
   flex-shrink: 0;
   margin-bottom: 24px;
 

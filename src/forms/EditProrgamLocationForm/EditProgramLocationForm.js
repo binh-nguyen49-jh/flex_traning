@@ -107,17 +107,18 @@ export const EditProgramLocationFormComponent = props => {
             {errorMessage}
             {errorMessageShowListing}
 
-            {options.map(option => (
-              <FieldCheckbox
-                id={option.key}
-                name="teachingForm"
-                label={option.label}
-                value={option.key}
-                key={option.key}
-                onClick={handleClickTeachForm}
-              />
-            ))}
-
+            <div className={css.teachingForm}>
+              {options.map(option => (
+                <FieldCheckbox
+                  id={option.key}
+                  name="teachingForm"
+                  label={option.label}
+                  value={option.key}
+                  key={option.key}
+                  onClick={handleClickTeachForm}
+                />
+              ))}
+            </div>
             {
               // // <FieldCheckboxGroup
               //   className={css.features}
