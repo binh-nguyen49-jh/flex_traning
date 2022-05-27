@@ -28,6 +28,9 @@ const getPageDataLoadingAPI = () => {
     EditListingPage: {
       loadData: EditListingPageLoader,
     },
+    EditProgramPage: {
+      loadData: EditListingPageLoader,
+    },
     EmailVerificationPage: {
       loadData: EmailVerificationPageLoader,
     },

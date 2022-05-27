@@ -15,6 +15,7 @@ const AuthenticationPage = loadable(() => import(/* webpackChunkName: "Authentic
 const CheckoutPage = loadable(() => import(/* webpackChunkName: "CheckoutPage" */ './containers/CheckoutPage/CheckoutPage'));
 const ContactDetailsPage = loadable(() => import(/* webpackChunkName: "ContactDetailsPage" */ './containers/ContactDetailsPage/ContactDetailsPage'));
 const EditListingPage = loadable(() => import(/* webpackChunkName: "EditListingPage" */ './containers/EditListingPage/EditListingPage'));
+const EditProgramPage = loadable(() => import(/* webpackChunkName: "EditProgramPage" */ './containers/EditProgramPage/EditProgramPage'));
 const EmailVerificationPage = loadable(() => import(/* webpackChunkName: "EmailVerificationPage" */ './containers/EmailVerificationPage/EmailVerificationPage'));
 const InboxPage = loadable(() => import(/* webpackChunkName: "InboxPage" */ './containers/InboxPage/InboxPage'));
 const LandingPage = loadable(() => import(/* webpackChunkName: "LandingPage" */ './containers/LandingPage/LandingPage'));
@@ -124,6 +125,32 @@ const routeConfiguration = () => {
       auth: true,
       component: EditListingPage,
       loadData: pageDataLoadingAPI.EditListingPage.loadData,
+    },
+
+    {
+      path: '/p/new',
+      name: 'NewListingPage',
+      auth: true,
+      component: () => (
+        <NamedRedirect
+          name="EditProgramPage"
+          params={{ slug: draftSlug, id: draftId, type: 'new', tab: 'description' }}
+        />
+      ),
+    },
+    {
+      path: '/p/:slug/:id/:type/:tab',
+      name: 'EditProgramPage',
+      auth: true,
+      component: EditProgramPage,
+      loadData: pageDataLoadingAPI.EditProgramPage.loadData,
+    },
+    {
+      path: '/p/:slug/:id/:type/:tab/:returnURLType',
+      name: 'EditListingStripeOnboardingPage',
+      auth: true,
+      component: EditProgramPage,
+      loadData: pageDataLoadingAPI.EditProgramPage.loadData,
     },
 
     // Canonical path should be after the `/l/new` path since they
