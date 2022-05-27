@@ -20,9 +20,10 @@ import {
 } from '..';
 
 import css from './EditProgramWizard.module.css';
+import EditProgramGeneralPanel from '../EditProgramGeneralPanel/EditProgramGeneralPanel';
 
 export const AVAILABILITY = 'availability';
-export const DESCRIPTION = 'description';
+export const GENERAL = 'general';
 export const FEATURES = 'features';
 export const POLICY = 'policy';
 export const LOCATION = 'location';
@@ -30,15 +31,7 @@ export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
 
 // EditListingWizardTab component supports these tabs
-export const SUPPORTED_TABS = [
-  DESCRIPTION,
-  FEATURES,
-  POLICY,
-  LOCATION,
-  PRICING,
-  AVAILABILITY,
-  PHOTOS,
-];
+export const SUPPORTED_TABS = [GENERAL, FEATURES, POLICY, LOCATION, PRICING, AVAILABILITY, PHOTOS];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
   const nextTabIndex = marketplaceTabs.findIndex(s => s === tab) + 1;
@@ -157,13 +150,13 @@ const EditProgramWizardTab = props => {
   };
 
   switch (tab) {
-    case DESCRIPTION: {
+    case GENERAL: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditProgramWizard.saveNewDescription'
         : 'EditProgramWizard.saveEditDescription';
       return (
-        <EditListingDescriptionPanel
-          {...panelProps(DESCRIPTION)}
+        <EditProgramGeneralPanel
+          {...panelProps(GENERAL)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
@@ -300,7 +293,7 @@ EditProgramWizardTab.propTypes = {
   listing: shape({
     attributes: shape({
       publicData: object,
-      description: string,
+      general: string,
       geolocation: object,
       pricing: object,
       title: string,
