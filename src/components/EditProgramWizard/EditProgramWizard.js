@@ -36,7 +36,15 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
-export const TABS = [GENERAL, FEATURES, POLICY, LOCATION, PRICING, ...availabilityMaybe, PHOTOS];
+export const TABS = [
+  GENERAL,
+  // FEATURES,
+  // POLICY,
+  LOCATION,
+  PRICING,
+  ...availabilityMaybe,
+  PHOTOS,
+];
 
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;

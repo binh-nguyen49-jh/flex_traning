@@ -77,7 +77,7 @@ import * as BookingDatesForm from './forms/BookingDatesForm/BookingDatesForm.exa
 import * as EditListingAvailabilityForm from './forms/EditListingAvailabilityForm/EditListingAvailabilityForm.example';
 import * as EditListingDescriptionForm from './forms/EditListingDescriptionForm/EditListingDescriptionForm.example';
 import * as EditListingFeaturesForm from './forms/EditListingFeaturesForm/EditListingFeaturesForm.example';
-import * as EditListingLocationForm from './forms/EditListingLocationForm/EditListingLocationForm.example';
+import * as EditListingLocationForm from './forms/EditProrgamLocationForm/EditProgramLocationForm.example';
 import * as EditListingPhotosForm from './forms/EditListingPhotosForm/EditListingPhotosForm.example';
 import * as EditListingPoliciesForm from './forms/EditListingPoliciesForm/EditListingPoliciesForm.example';
 import * as EditListingPricingForm from './forms/EditListingPricingForm/EditListingPricingForm.example';
