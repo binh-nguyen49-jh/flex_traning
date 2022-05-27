@@ -54,15 +54,31 @@ const EditProgramGeneralPanel = props => {
           title,
           description,
           programTags: publicData.programTags,
-          category: publicData.category,
+          programDifficulties: publicData.programDifficulties,
+          isCustomHour: publicData.isCustomHour,
+          customHours: publicData.hours,
+          hoursChoices: publicData.isCustomHour ? config.CUSTOM_HOUR : publicData.hours,
         }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { title, description, programTags, programDifficulties, category } = values;
+          const {
+            title,
+            description,
+            programTags,
+            programDifficulties,
+            hoursChoices,
+            customHours,
+          } = values;
+          const isCustomHour = hoursChoices === config.CUSTOM_HOUR;
           const updateValues = {
             title: title.trim(),
             description,
-            publicData: { category, programTags, programDifficulties },
+            publicData: {
+              programTags,
+              programDifficulties,
+              hours: parseInt(isCustomHour ? customHours : hoursChoices),
+              isCustomHour,
+            },
           };
 
           onSubmit(updateValues);

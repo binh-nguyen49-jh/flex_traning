@@ -20,7 +20,10 @@ import css from './EditProgramGeneralForm.module.css';
 const TITLE_MAX_LENGTH = 60;
 
 const EditProgramGeneralFormComponent = props => {
-  const [isChoosingCustomHours, setChoosingCustomHours] = useState(false);
+  const { initialValues } = props;
+  const [isChoosingCustomHours, setChoosingCustomHours] = useState(
+    false || !!initialValues.isCustomHour
+  );
   return (
     <FinalForm
       {...props}
@@ -179,8 +182,8 @@ const EditProgramGeneralFormComponent = props => {
             </FieldSelect>
             {isChoosingCustomHours && (
               <FieldTextInput
-                id="hours"
-                name="hours"
+                id="customHours"
+                name="customHours"
                 className={css.hours}
                 type="number"
                 label={hoursMessage}
