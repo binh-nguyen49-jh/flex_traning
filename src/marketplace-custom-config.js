@@ -74,6 +74,15 @@ export const filters = [
     config: {},
   },
   {
+    id: 'programTags',
+    label: 'Keyword',
+    type: 'KeywordFilter',
+    group: 'secondary',
+    // Note: KeywordFilter is fixed filter,
+    queryParamNames: ['programTags'],
+    config: {},
+  },
+  {
     id: 'category',
     label: 'Category',
     type: 'SelectSingleFilter',

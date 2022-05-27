@@ -46,15 +46,15 @@ const EditProgramGeneralFormComponent = props => (
         }
       );
 
-      const descriptionMessage = intl.formatMessage({
-        id: 'EditProgramGeneralForm.description',
+      const programTagsMessage = intl.formatMessage({
+        id: 'EditProgramGeneralForm.programTags',
       });
-      const descriptionPlaceholderMessage = intl.formatMessage({
-        id: 'EditProgramGeneralForm.descriptionPlaceholder',
+      const programTagsPlaceholderMessage = intl.formatMessage({
+        id: 'EditProgramGeneralForm.programTagsPlaceholder',
       });
       const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
-      const descriptionRequiredMessage = intl.formatMessage({
-        id: 'EditProgramGeneralForm.descriptionRequired',
+      const programTagsRequiredMessage = intl.formatMessage({
+        id: 'EditProgramGeneralForm.programTagsRequired',
       });
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
@@ -100,13 +100,13 @@ const EditProgramGeneralFormComponent = props => (
           />
 
           <FieldTextInput
-            id="description"
-            name="description"
-            className={css.description}
+            id="programTags"
+            name="programTags"
+            className={css.programTags}
             type="textarea"
-            label={descriptionMessage}
-            placeholder={descriptionPlaceholderMessage}
-            validate={composeValidators(required(descriptionRequiredMessage))}
+            label={programTagsMessage}
+            placeholder={programTagsPlaceholderMessage}
+            validate={composeValidators(required(programTagsRequiredMessage))}
           />
 
           <CustomCategorySelectFieldMaybe
