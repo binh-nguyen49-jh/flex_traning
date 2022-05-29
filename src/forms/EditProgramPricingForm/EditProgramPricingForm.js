@@ -6,11 +6,17 @@ import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import config from '../../config';
 import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types';
-import * as validators from '../../util/validators';
 import { formatMoney } from '../../util/currency';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import { Button, Form, FieldCurrencyInput, FieldSelect } from '../../components';
+import { Button, Form, FieldCurrencyInput, FieldSelect, FieldTextInput } from '../../components';
 import css from './EditProgramPricingForm.module.css';
+import {
+  composeValidators,
+  isPositiveNumber,
+  moneySubUnitAmountAtLeast,
+  required,
+  validNumber,
+} from '../../util/validators';
 
 const { Money } = sdkTypes;
 
@@ -18,9 +24,8 @@ export const EditProgramPricingFormComponent = props => {
   const { initialValues } = props;
   const { priceChoices, PACKAGE_PRICE, HOURLY_PRICE } = config;
   const [priceOption, setPriceOption] = useState(initialValues?.priceChoices || PACKAGE_PRICE);
-  const [totalPrice, setTotalPrice] = useState(
-    initialValues.price ? initialValues.price : new Money(0, config.currency)
-  );
+  const [totalPrice, setTotalPrice] = useState(initialValues.price ? initialValues.price : 0);
+
   const hours = (initialValues && initialValues.hours) || 1;
 
   return (
@@ -62,13 +67,29 @@ export const EditProgramPricingFormComponent = props => {
           [HOURLY_PRICE]: pricePerHourMessage,
         };
 
-        const priceRequired = validators.required(
+        const limitQuantityMessage = intl.formatMessage({
+          id: 'EditProgramPricingForm.limitQuantity',
+        });
+        const limitQuantityPlaceholderMessage = intl.formatMessage({
+          id: 'EditProgramPricingForm.limitQuantityPlaceholder',
+        });
+        const limitQuantityRequiredMessage = intl.formatMessage({
+          id: 'EditProgramPricingForm.limitQuantityRequired',
+        });
+        const limitQuantityNumber = intl.formatMessage({
+          id: 'EditProgramPricingForm.limitQuantityNumber',
+        });
+        const limitQuantityPositiveNumber = intl.formatMessage({
+          id: 'EditProgramPricingForm.limitQuantityPositiveNumber',
+        });
+
+        const priceRequired = required(
           intl.formatMessage({
             id: 'EditProgramPricingForm.priceRequired',
           })
         );
         const minPrice = new Money(config.listingMinimumPriceSubUnits, config.currency);
-        const minPriceRequired = validators.moneySubUnitAmountAtLeast(
+        const minPriceRequired = moneySubUnitAmountAtLeast(
           intl.formatMessage(
             {
               id: 'EditProgramPricingForm.priceTooLow',
@@ -80,7 +101,7 @@ export const EditProgramPricingFormComponent = props => {
           config.listingMinimumPriceSubUnits
         );
         const priceValidators = config.listingMinimumPriceSubUnits
-          ? validators.composeValidators(priceRequired, minPriceRequired)
+          ? composeValidators(priceRequired, minPriceRequired)
           : priceRequired;
 
         const classes = classNames(css.root, className);
@@ -141,11 +162,29 @@ export const EditProgramPricingFormComponent = props => {
               validate={priceValidators}
             />
 
+            {priceOption === PACKAGE_PRICE && (
+              <FieldTextInput
+                id="limitedQuantity"
+                name="limitedQuantity"
+                className={css.limitQuantity}
+                type="number"
+                label={limitQuantityMessage}
+                placeholder={limitQuantityPlaceholderMessage}
+                validate={composeValidators(
+                  validNumber(limitQuantityNumber),
+                  required(limitQuantityRequiredMessage),
+                  isPositiveNumber(limitQuantityNumber)
+                )}
+              />
+            )}
+
             <div className={css.totalPrice}>
               <div className={css.totalPriceLabel}>
                 <FormattedMessage id="EditProgramPricingForm.totalPrice" />
               </div>
-              <p className={css.totalPriceValue}>{formatMoney(intl, totalPrice)}</p>
+              <p className={css.totalPriceValue}>
+                {formatMoney(intl, new Money(totalPrice, config.currency))}
+              </p>
             </div>
 
             <Button
