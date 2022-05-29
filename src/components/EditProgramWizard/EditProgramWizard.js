@@ -104,7 +104,9 @@ const tabCompleted = (tab, listing) => {
       return !!(
         publicData &&
         publicData.teachingForm &&
-        (publicData.teachingForm === ONLINE || (publicData.location && publicData.location.address))
+        publicData.teachingForm &&
+        (publicData.teachingForm.includes(ONLINE) ||
+          (publicData.location && publicData.location.address))
       );
     case PRICING:
       return !!price;
