@@ -134,7 +134,7 @@ const routeConfiguration = () => {
       component: () => (
         <NamedRedirect
           name="EditProgramPage"
-          params={{ slug: draftSlug, id: draftId, type: 'new', tab: 'description' }}
+          params={{ slug: draftSlug, id: draftId, type: 'new', tab: 'general' }}
         />
       ),
     },
