@@ -40,6 +40,9 @@ const getPageDataLoadingAPI = () => {
     ListingPage: {
       loadData: ListingPageLoader,
     },
+    ProgramListingPage: {
+      loadData: ListingPageLoader,
+    },
     ManageListingsPage: {
       loadData: ManageListingsPageLoader,
     },
