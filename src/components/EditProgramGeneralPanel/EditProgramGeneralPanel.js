@@ -55,9 +55,11 @@ const EditProgramGeneralPanel = props => {
           description,
           programTags: publicData.programTags,
           programDifficulties: publicData.programDifficulties,
-          isCustomHour: publicData.isCustomHour,
-          customHours: publicData.hours,
-          hoursChoices: publicData.isCustomHour ? config.CUSTOM_HOUR : publicData.hours,
+          isCustomHour: !!publicData.isCustomHour,
+          customHours: publicData.hours || config.DEFAULT_HOUR,
+          hoursChoices: publicData.isCustomHour
+            ? config.CUSTOM_HOUR
+            : publicData.hours || config.DEFAULT_HOUR,
         }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {

@@ -204,6 +204,7 @@ const hoursChoices = [
   { label: '8 hours', value: '8' },
   { label: 'Custom hours', value: CUSTOM_HOUR },
 ];
+const DEFAULT_HOUR = '2';
 
 const PACKAGE_PRICE = 'package';
 const HOURLY_PRICE = 'hourly';
@@ -260,6 +261,7 @@ const config = {
   priceChoices,
   PACKAGE_PRICE,
   HOURLY_PRICE,
+  DEFAULT_HOUR,
 };
 
 export default config;
