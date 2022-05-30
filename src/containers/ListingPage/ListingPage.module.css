@@ -397,7 +397,10 @@
   margin: 0;
 }
 
-.sectionDescription {
+.sectionDescription,
+.sectionProgramTags,
+.sectionHours,
+.sectionDifficulty {
   padding: 0 24px;
   margin-bottom: 35px;
 
@@ -408,7 +411,8 @@
 }
 
 .descriptionTitle,
-.programTagsTitle {
+.programTagsTitle,
+.hoursTitle {
   /* Font */
   @apply --marketplaceH3FontStyles;
   color: var(--matterColorAnti);
@@ -475,15 +479,14 @@
   color: var(--matterColorAnti);
 
   margin-top: 0;
-  margin-bottom: 20px;
 
   @media (--viewportMedium) {
     margin-top: 0;
-    margin-bottom: 28px;
   }
 }
 
-.sectionReviews {
+.sectionReviews,
+.teachingForm {
   padding: 0 24px;
   margin-bottom: 5px;
 

@@ -4,12 +4,12 @@ import { richText } from '../../util/richText';
 
 import css from './ListingPage.module.css';
 
-const MIN_LENGTH_FOR_LONG_WORDS_IN_DESCRIPTION = 20;
+const MIN_LENGTH_FOR_LONG_WORDS_IN_DESCRIPTION = 40;
 
 const SectionProgramTagMaybe = props => {
   const { programTags } = props;
   return programTags ? (
-    <div className={css.sectionDescription}>
+    <div className={css.sectionProgramTags}>
       <h2 className={css.programTagsTitle}>
         <FormattedMessage id="ProgramListingPage.programTagsTitle" />
       </h2>
