@@ -186,11 +186,11 @@ export const filters = [
     },
   },
   {
-    id: 'programForm',
-    label: 'Program Form',
+    id: 'teachingForm',
+    label: 'Teaching Form',
     type: 'SelectMultipleFilter',
     group: 'secondary',
-    queryParamNames: ['programForm'],
+    queryParamNames: ['teachingForm'],
     config: {
       // Optional modes: 'has_all', 'has_any'
       // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering

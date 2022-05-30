@@ -16,6 +16,7 @@ import {
   Button,
   FieldTextInput,
   FieldCheckbox,
+  FieldCheckboxGroup,
 } from '../../components';
 
 import css from './EditProgramLocationForm.module.css';
@@ -100,7 +101,7 @@ export const EditProgramLocationFormComponent = props => {
         const submitReady = (updated && pristine) || ready;
         const submitInProgress = updateInProgress;
         const submitDisabled = invalid || disabled || submitInProgress;
-        const options = findOptionsForSelectFilter('programForm', config.custom.filters);
+        const options = findOptionsForSelectFilter('teachingForm', config.custom.filters);
 
         return (
           <Form className={classes} onSubmit={handleSubmit}>
@@ -119,17 +120,6 @@ export const EditProgramLocationFormComponent = props => {
                 />
               ))}
             </div>
-            {
-              // // <FieldCheckboxGroup
-              //   className={css.features}
-              //   id="teachingForm"
-              //   name="teachingForm"
-              //   label="Teach Form"
-              //   options={options}
-              //   onChange={e => {
-              //     console.log(e);
-              //   }}
-            }
 
             {teachingForm[ONSITE] && (
               <>
