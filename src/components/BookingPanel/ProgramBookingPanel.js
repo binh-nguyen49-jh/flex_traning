@@ -56,7 +56,7 @@ const ProgramBookingPanel = props => {
     listing,
     isOwnListing,
     unitType,
-    priceChoices,
+    pricingOption,
     onSubmit,
     title,
     subTitle,
@@ -83,8 +83,8 @@ const ProgramBookingPanel = props => {
     : showClosedListingHelpText
     ? intl.formatMessage({ id: 'ProgramBookingPanel.subTitleClosedListing' })
     : null;
-  const isPackage = priceChoices === config.PACKAGE_PRICE;
-  const isHourly = priceChoices === config.HOURLY_PRICE;
+  const isPackage = pricingOption === config.PACKAGE_PRICE;
+  const isHourly = pricingOption === config.HOURLY_PRICE;
   const { price, publicData } = listing.attributes;
   const totalPrice = isHourly ? new Money(price.amount * publicData.hours, config.currency) : price;
   const { formattedPrice, priceTitle } = priceData(price, intl);

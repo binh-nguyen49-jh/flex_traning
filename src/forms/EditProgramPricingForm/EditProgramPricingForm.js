@@ -22,8 +22,8 @@ const { Money } = sdkTypes;
 
 export const EditProgramPricingFormComponent = props => {
   const { initialValues } = props;
-  const { priceChoices, PACKAGE_PRICE, HOURLY_PRICE } = config;
-  const [priceOption, setPriceOption] = useState(initialValues?.priceChoices);
+  const { pricingOption, PACKAGE_PRICE, HOURLY_PRICE } = config;
+  const [priceOption, setPriceOption] = useState(initialValues?.pricingOption);
   const [totalPrice, setTotalPrice] = useState(
     initialValues.price || new Money(0, config.currency)
   );
@@ -150,12 +150,12 @@ export const EditProgramPricingFormComponent = props => {
             />
 
             <FieldSelect
-              className={css.priceChoices}
-              name="priceChoices"
-              id="priceChoices"
+              className={css.pricingOption}
+              name="pricingOption"
+              id="pricingOption"
               label={'Pricing option'}
             >
-              {priceChoices.map(o => (
+              {pricingOption.map(o => (
                 <option onClick={handleClickOption} key={o.value} value={o.value}>
                   {o.label}
                 </option>

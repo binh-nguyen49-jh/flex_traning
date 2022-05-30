@@ -208,7 +208,7 @@ const DEFAULT_HOUR = '2';
 
 const PACKAGE_PRICE = 'package';
 const HOURLY_PRICE = 'hourly';
-const priceChoices = [
+const pricingOption = [
   { label: 'Package', value: PACKAGE_PRICE },
   { label: 'Hourly', value: HOURLY_PRICE },
 ];
@@ -258,7 +258,7 @@ const config = {
   custom,
   hoursChoices,
   CUSTOM_HOUR,
-  priceChoices,
+  pricingOption,
   PACKAGE_PRICE,
   HOURLY_PRICE,
   DEFAULT_HOUR,

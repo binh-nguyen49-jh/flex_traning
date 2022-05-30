@@ -401,7 +401,7 @@ export class ProgramListingPageComponent extends Component {
       programTags,
       programDifficulties,
       hours,
-      priceChoices,
+      pricingOption,
       limitedQuantity,
     } = publicData;
 
@@ -452,7 +452,7 @@ export class ProgramListingPageComponent extends Component {
                     hostLink={hostLink}
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
-                    priceChoices={priceChoices}
+                    pricingOption={pricingOption}
                     limitedQuantity={limitedQuantity}
                   />
                   <SectionDescriptionMaybe description={description} />
@@ -492,7 +492,7 @@ export class ProgramListingPageComponent extends Component {
                   listing={currentListing}
                   isOwnListing={isOwnListing}
                   unitType={unitType}
-                  priceChoices={priceChoices}
+                  pricingOption={pricingOption}
                   onSubmit={handleBookingSubmit}
                   title={bookingTitle}
                   subTitle={bookingSubTitle}

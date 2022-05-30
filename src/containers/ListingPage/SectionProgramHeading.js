@@ -14,12 +14,12 @@ const SectionProgramHeading = props => {
     hostLink,
     showContactUser,
     onContactUser,
-    priceChoices,
+    pricingOption,
     limitedQuantity,
   } = props;
 
-  const isPackage = priceChoices === config.PACKAGE_PRICE;
-  const isHourly = priceChoices === config.HOURLY_PRICE;
+  const isPackage = pricingOption === config.PACKAGE_PRICE;
+  const isHourly = pricingOption === config.HOURLY_PRICE;
 
   const unitTranslationKey = isPackage
     ? 'ProgramListingPage.perPackage'

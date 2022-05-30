@@ -129,7 +129,7 @@ export const ManageListingCardComponent = props => {
   const currentListing = ensureOwnListing(listing);
   const id = currentListing.id.uuid;
   const { title = '', price, state, publicData } = currentListing.attributes;
-  const { priceChoices } = publicData;
+  const { pricingOption } = publicData;
   const slug = createSlug(title);
   const isPendingApproval = state === LISTING_STATE_PENDING_APPROVAL;
   const isClosed = state === LISTING_STATE_CLOSED;
@@ -165,8 +165,8 @@ export const ManageListingCardComponent = props => {
     ? LISTING_PAGE_PARAM_TYPE_DRAFT
     : LISTING_PAGE_PARAM_TYPE_EDIT;
 
-  const isPackage = priceChoices === config.PACKAGE_PRICE;
-  const isHourly = priceChoices === config.HOURLY_PRICE;
+  const isPackage = pricingOption === config.PACKAGE_PRICE;
+  const isHourly = pricingOption === config.HOURLY_PRICE;
 
   const unitTranslationKey = isPackage
     ? 'ProgramListingPage.perPackage'

@@ -31,7 +31,7 @@ const EditProgramPricingPanel = props => {
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
   const { price } = currentListing.attributes;
-  const { hours, priceChoices, limitedQuantity } = currentListing.attributes.publicData;
+  const { hours, pricingOption, limitedQuantity } = currentListing.attributes.publicData;
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
   const panelTitle = isPublished ? (
@@ -50,18 +50,18 @@ const EditProgramPricingPanel = props => {
       initialValues={{
         price,
         hours,
-        priceChoices: priceChoices || config.HOURLY_PRICE,
+        pricingOption: pricingOption || config.HOURLY_PRICE,
         limitedQuantity,
       }}
       onSubmit={values => {
-        const { priceChoices, price, limitedQuantity } = values;
+        const { pricingOption, price, limitedQuantity } = values;
         const updateValues = {
           price,
           publicData: {
-            priceChoices,
+            pricingOption,
           },
         };
-        if (priceChoices === config.PACKAGE_PRICE) {
+        if (pricingOption === config.PACKAGE_PRICE) {
           updateValues.publicData.limitedQuantity = limitedQuantity;
         }
         onSubmit(updateValues);
