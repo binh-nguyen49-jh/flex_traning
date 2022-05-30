@@ -50,12 +50,12 @@ import SectionImages from './SectionImages';
 import SectionAvatar from './SectionAvatar';
 import SectionHeading from './SectionHeading';
 import SectionDescriptionMaybe from './SectionDescriptionMaybe';
-import SectionFeaturesMaybe from './SectionFeaturesMaybe';
 import SectionReviews from './SectionReviews';
 import SectionHostMaybe from './SectionHostMaybe';
 import SectionRulesMaybe from './SectionRulesMaybe';
 import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.module.css';
+import SectionProgramTagMaybe from './SectionProgramTagMaybe';
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
@@ -380,7 +380,6 @@ export class ProgramListingPageComponent extends Component {
       </NamedLink>
     );
 
-    const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig);
     const categoryOptions = findOptionsForSelectFilter('category', filterConfig);
     const category =
       publicData && publicData.category ? (
@@ -389,6 +388,8 @@ export class ProgramListingPageComponent extends Component {
           <span className={css.separator}>•</span>
         </span>
       ) : null;
+
+    const { programTags } = publicData;
 
     return (
       <Page
@@ -439,7 +440,8 @@ export class ProgramListingPageComponent extends Component {
                     onContactUser={this.onContactUser}
                   />
                   <SectionDescriptionMaybe description={description} />
-                  <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />
+                  <SectionProgramTagMaybe programTags={programTags} />
+                  {/* <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} /> */}
                   <SectionRulesMaybe publicData={publicData} />
                   <SectionMapMaybe
                     geolocation={geolocation}

@@ -463,6 +463,7 @@
   "ProgramListingPage.closedListing": "This listing has been closed and can't be booked.",
   "ProgramListingPage.contactUser": "Contact",
   "ProgramListingPage.descriptionTitle": "About this sauna",
+  "ProgramListingPage.programTagsTitle": "Program Tags",
   "ProgramListingPage.editListing": "Edit listing",
   "ProgramListingPage.editProfileLink": "Edit profile",
   "ProgramListingPage.errorLoadingListingMessage": "Could not load listing. Please try again.",
