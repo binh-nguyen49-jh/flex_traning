@@ -76,7 +76,7 @@ const createListingURL = (routes, listing) => {
   const linkProps =
     isPendingApproval || isDraft
       ? {
-          name: 'ListingPageVariant',
+          name: 'ProgramListingPageVariant',
           params: {
             id,
             slug,
@@ -84,7 +84,7 @@ const createListingURL = (routes, listing) => {
           },
         }
       : {
-          name: 'ListingPage',
+          name: 'ProgramListingPage',
           params: { id, slug },
         };
 
@@ -128,7 +128,8 @@ export const ManageListingCardComponent = props => {
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
   const id = currentListing.id.uuid;
-  const { title = '', price, state } = currentListing.attributes;
+  const { title = '', price, state, publicData } = currentListing.attributes;
+  const { priceChoices } = publicData;
   const slug = createSlug(title);
   const isPendingApproval = state === LISTING_STATE_PENDING_APPROVAL;
   const isClosed = state === LISTING_STATE_CLOSED;
@@ -164,15 +165,14 @@ export const ManageListingCardComponent = props => {
     ? LISTING_PAGE_PARAM_TYPE_DRAFT
     : LISTING_PAGE_PARAM_TYPE_EDIT;
 
-  const unitType = config.bookingUnitType;
-  const isNightly = unitType === LINE_ITEM_NIGHT;
-  const isDaily = unitType === LINE_ITEM_DAY;
+  const isPackage = priceChoices === config.PACKAGE_PRICE;
+  const isHourly = priceChoices === config.HOURLY_PRICE;
 
-  const unitTranslationKey = isNightly
-    ? 'ManageListingCard.perNight'
-    : isDaily
-    ? 'ManageListingCard.perDay'
-    : 'ManageListingCard.perUnit';
+  const unitTranslationKey = isPackage
+    ? 'ProgramListingPage.perPackage'
+    : isHourly
+    ? 'ProgramListingPage.perHour'
+    : 'ProgramListingPage.perUnit';
 
   return (
     <div className={classes}>
