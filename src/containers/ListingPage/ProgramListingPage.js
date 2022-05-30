@@ -53,10 +53,14 @@ import SectionDescriptionMaybe from './SectionDescriptionMaybe';
 import SectionReviews from './SectionReviews';
 import SectionHostMaybe from './SectionHostMaybe';
 import SectionRulesMaybe from './SectionRulesMaybe';
-import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.module.css';
 import SectionProgramTagMaybe from './SectionProgramTagMaybe';
-
+import SectionPropertyGroup from './SectionPropertyGroup';
+import SectionHoursMaybe from './SectionHoursMaybe';
+import SectionTeachingLocationMaybe from './SectionTeachingLocation';
+import SectionProgramHeading from './SectionProgramHeading';
+import ProgramBookingPanel from '../../components/BookingPanel/ProgramBookingPanel';
+const { Money } = sdkTypes;
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
 const { UUID } = sdkTypes;
@@ -381,6 +385,7 @@ export class ProgramListingPageComponent extends Component {
     );
 
     const categoryOptions = findOptionsForSelectFilter('category', filterConfig);
+    const difficultyOptions = findOptionsForSelectFilter('programDifficulties', filterConfig);
     const category =
       publicData && publicData.category ? (
         <span>
@@ -389,7 +394,16 @@ export class ProgramListingPageComponent extends Component {
         </span>
       ) : null;
 
-    const { programTags } = publicData;
+    const teachingFormOptions = findOptionsForSelectFilter('teachingForm', filterConfig);
+
+    const {
+      teachingForm,
+      programTags,
+      programDifficulties,
+      hours,
+      priceChoices,
+      limitedQuantity,
+    } = publicData;
 
     return (
       <Page
@@ -430,7 +444,7 @@ export class ProgramListingPageComponent extends Component {
               <div className={css.contentContainer}>
                 <SectionAvatar user={currentAuthor} params={params} />
                 <div className={css.mainContent}>
-                  <SectionHeading
+                  <SectionProgramHeading
                     priceTitle={priceTitle}
                     formattedPrice={formattedPrice}
                     richTitle={richTitle}
@@ -438,13 +452,23 @@ export class ProgramListingPageComponent extends Component {
                     hostLink={hostLink}
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
+                    priceChoices={priceChoices}
+                    limitedQuantity={limitedQuantity}
                   />
                   <SectionDescriptionMaybe description={description} />
                   <SectionProgramTagMaybe programTags={programTags} />
-                  {/* <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} /> */}
+                  <SectionPropertyGroup
+                    options={difficultyOptions}
+                    selectedOptions={programDifficulties}
+                    titleMessageId="ProgramListingPage.programDifficultyTitle"
+                    id="ProgramListingPage.programDifficultyTitle"
+                  />
+                  <SectionHoursMaybe hours={hours} />
                   <SectionRulesMaybe publicData={publicData} />
-                  <SectionMapMaybe
+                  <SectionTeachingLocationMaybe
                     geolocation={geolocation}
+                    selectedOptions={teachingForm}
+                    options={teachingFormOptions}
                     publicData={publicData}
                     listingId={currentListing.id}
                   />
@@ -463,11 +487,12 @@ export class ProgramListingPageComponent extends Component {
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
                 </div>
-                <BookingPanel
+                <ProgramBookingPanel
                   className={css.bookingPanel}
                   listing={currentListing}
                   isOwnListing={isOwnListing}
                   unitType={unitType}
+                  priceChoices={priceChoices}
                   onSubmit={handleBookingSubmit}
                   title={bookingTitle}
                   subTitle={bookingSubTitle}
