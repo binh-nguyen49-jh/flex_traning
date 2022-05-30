@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { bool, func, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm, FormSpy } from 'react-final-form';
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import config from '../../config';
-import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types';
+import { propTypes } from '../../util/types';
 import { formatMoney } from '../../util/currency';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import { Button, Form, FieldCurrencyInput, FieldSelect, FieldTextInput } from '../../components';
@@ -23,8 +23,15 @@ const { Money } = sdkTypes;
 export const EditProgramPricingFormComponent = props => {
   const { initialValues } = props;
   const { priceChoices, PACKAGE_PRICE, HOURLY_PRICE } = config;
-  const [priceOption, setPriceOption] = useState(initialValues?.priceChoices || PACKAGE_PRICE);
-  const [totalPrice, setTotalPrice] = useState(initialValues.price ? initialValues.price : 0);
+  const [priceOption, setPriceOption] = useState(initialValues?.priceChoices);
+  const [totalPrice, setTotalPrice] = useState(
+    initialValues.price || new Money(0, config.currency)
+  );
+  const firstRender = useRef(true);
+
+  useEffect(() => {
+    firstRender.current = false;
+  }, []);
 
   const hours = (initialValues && initialValues.hours) || 1;
 
@@ -127,11 +134,17 @@ export const EditProgramPricingFormComponent = props => {
 
             <FormSpy
               onChange={formState => {
-                const price = formState.values.price ? formState.values.price.amount : 0;
-                if (priceOption === HOURLY_PRICE) {
-                  setTotalPrice(price * hours);
-                } else {
-                  setTotalPrice(price);
+                if (!firstRender.current) {
+                  if (formState.values.price) {
+                    const priceAmount = formState.values.price.amount;
+                    let price = priceAmount;
+                    if (price && priceOption === HOURLY_PRICE) {
+                      price *= hours;
+                    }
+                    setTotalPrice(new Money(price, config.currency));
+                  } else {
+                    setTotalPrice(new Money(0, config.currency));
+                  }
                 }
               }}
             />
@@ -173,7 +186,7 @@ export const EditProgramPricingFormComponent = props => {
                 validate={composeValidators(
                   validNumber(limitQuantityNumber),
                   required(limitQuantityRequiredMessage),
-                  isPositiveNumber(limitQuantityNumber)
+                  isPositiveNumber(limitQuantityPositiveNumber)
                 )}
               />
             )}
@@ -182,9 +195,7 @@ export const EditProgramPricingFormComponent = props => {
               <div className={css.totalPriceLabel}>
                 <FormattedMessage id="EditProgramPricingForm.totalPrice" />
               </div>
-              <p className={css.totalPriceValue}>
-                {formatMoney(intl, new Money(totalPrice, config.currency))}
-              </p>
+              <p className={css.totalPriceValue}>{formatMoney(intl, totalPrice)}</p>
             </div>
 
             <Button

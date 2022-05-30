@@ -23,7 +23,8 @@
 
 .priceChoices,
 .priceInput,
-.limitQuantity {
+.limitQuantity,
+.totalPrice {
   margin-bottom: 24px;
 
   @media (--viewportMedium) {

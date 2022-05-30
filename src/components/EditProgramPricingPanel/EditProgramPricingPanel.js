@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { FormattedMessage } from '../../util/reactIntl';
 import { LISTING_STATE_DRAFT } from '../../util/types';
 import { ListingLink } from '..';
-import { EditListingPricingForm } from '../../forms';
 import { ensureOwnListing } from '../../util/data';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import config from '../../config';
@@ -32,7 +31,7 @@ const EditProgramPricingPanel = props => {
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
   const { price } = currentListing.attributes;
-  const { hours, priceChoices } = currentListing.attributes.publicData;
+  const { hours, priceChoices, limitedQuantity } = currentListing.attributes.publicData;
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
   const panelTitle = isPublished ? (
@@ -48,18 +47,23 @@ const EditProgramPricingPanel = props => {
   const form = priceCurrencyValid ? (
     <EditProgramPricingForm
       className={css.form}
-      initialValues={{ price, hours, priceChoices }}
+      initialValues={{
+        price,
+        hours,
+        priceChoices: priceChoices || config.HOURLY_PRICE,
+        limitedQuantity,
+      }}
       onSubmit={values => {
-        const { priceChoices, price } = values;
-
-        const totalPrice = priceChoices === config.HOURLY_PRICE ? price * hours : price;
+        const { priceChoices, price, limitedQuantity } = values;
         const updateValues = {
-          price: totalPrice,
+          price,
           publicData: {
             priceChoices,
           },
         };
-
+        if (priceChoices === config.PACKAGE_PRICE) {
+          updateValues.publicData.limitedQuantity = limitedQuantity;
+        }
         onSubmit(updateValues);
       }}
       onChange={onChange}
