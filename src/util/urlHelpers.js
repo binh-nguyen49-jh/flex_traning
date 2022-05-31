@@ -1,5 +1,7 @@
 import queryString from 'query-string';
+import { createResourceLocatorString } from './routes';
 import { types as sdkTypes } from './sdkLoader';
+import { LISTING_STATE_DRAFT, LISTING_STATE_PENDING_APPROVAL } from './types';
 
 const { LatLng, LatLngBounds } = sdkTypes;
 
@@ -238,4 +240,33 @@ export const twitterPageURL = twitterHandle => {
     return `https://twitter.com/${twitterHandle}`;
   }
   return null;
+};
+
+export const createListingURL = (routes, listing) => {
+  const id = listing.id.uuid;
+  const slug = createSlug(listing.attributes.title);
+  const isPendingApproval = listing.attributes.state === LISTING_STATE_PENDING_APPROVAL;
+  const isDraft = listing.attributes.state === LISTING_STATE_DRAFT;
+  const variant = isDraft
+    ? LISTING_PAGE_DRAFT_VARIANT
+    : isPendingApproval
+    ? LISTING_PAGE_PENDING_APPROVAL_VARIANT
+    : null;
+
+  const linkProps =
+    isPendingApproval || isDraft
+      ? {
+          name: 'ProgramListingPageVariant',
+          params: {
+            id,
+            slug,
+            variant,
+          },
+        }
+      : {
+          name: 'ProgramListingPage',
+          params: { id, slug },
+        };
+
+  return createResourceLocatorString(linkProps.name, routes, linkProps.params, {});
 };

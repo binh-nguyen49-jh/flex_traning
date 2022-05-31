@@ -37,7 +37,6 @@ import {
   LayoutWrapperMain,
   LayoutWrapperFooter,
   Footer,
-  BookingPanel,
 } from '../../components';
 import { TopbarContainer, NotFoundPage } from '../../containers';
 
@@ -60,7 +59,6 @@ import SectionHoursMaybe from './SectionHoursMaybe';
 import SectionTeachingLocationMaybe from './SectionTeachingLocation';
 import SectionProgramHeading from './SectionProgramHeading';
 import ProgramBookingPanel from '../../components/BookingPanel/ProgramBookingPanel';
-const { Money } = sdkTypes;
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
 const { UUID } = sdkTypes;
@@ -292,7 +290,7 @@ export class ProgramListingPageComponent extends Component {
           </LayoutSingleColumn>
         </Page>
       );
-    } else if (!currentListing.id) {
+    } else if (!currentListing.id || !publicData) {
       // Still loading the listing
 
       const loadingTitle = intl.formatMessage({
