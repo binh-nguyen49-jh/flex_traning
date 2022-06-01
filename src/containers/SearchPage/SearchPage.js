@@ -148,7 +148,6 @@ export class SearchPageComponent extends Component {
 
     const { address, bounds, origin } = searchInURL || {};
     const { title, description, schema } = createSearchResultSchema(listings, address, intl);
-
     // Set topbar class based on if a modal is open in
     // a child component
     const topbarClasses = this.state.isMobileModalOpen

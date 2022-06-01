@@ -6,8 +6,6 @@ import classNames from 'classnames';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import routeConfiguration from '../../routeConfiguration';
 import {
-  LINE_ITEM_NIGHT,
-  LINE_ITEM_DAY,
   LISTING_STATE_PENDING_APPROVAL,
   LISTING_STATE_CLOSED,
   LISTING_STATE_DRAFT,
@@ -21,6 +19,7 @@ import {
   LISTING_PAGE_PARAM_TYPE_DRAFT,
   LISTING_PAGE_PARAM_TYPE_EDIT,
   createSlug,
+  createListingURL,
 } from '../../util/urlHelpers';
 import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
 import config from '../../config';
@@ -60,35 +59,6 @@ const priceData = (price, intl) => {
     };
   }
   return {};
-};
-
-const createListingURL = (routes, listing) => {
-  const id = listing.id.uuid;
-  const slug = createSlug(listing.attributes.title);
-  const isPendingApproval = listing.attributes.state === LISTING_STATE_PENDING_APPROVAL;
-  const isDraft = listing.attributes.state === LISTING_STATE_DRAFT;
-  const variant = isDraft
-    ? LISTING_PAGE_DRAFT_VARIANT
-    : isPendingApproval
-    ? LISTING_PAGE_PENDING_APPROVAL_VARIANT
-    : null;
-
-  const linkProps =
-    isPendingApproval || isDraft
-      ? {
-          name: 'ProgramListingPageVariant',
-          params: {
-            id,
-            slug,
-            variant,
-          },
-        }
-      : {
-          name: 'ProgramListingPage',
-          params: { id, slug },
-        };
-
-  return createResourceLocatorString(linkProps.name, routes, linkProps.params, {});
 };
 
 // Cards are not fixed sizes - So, long words in title make flexboxed items to grow too big.
