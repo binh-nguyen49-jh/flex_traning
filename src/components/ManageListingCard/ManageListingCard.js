@@ -6,8 +6,6 @@ import classNames from 'classnames';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import routeConfiguration from '../../routeConfiguration';
 import {
-  LINE_ITEM_NIGHT,
-  LINE_ITEM_DAY,
   LISTING_STATE_PENDING_APPROVAL,
   LISTING_STATE_CLOSED,
   LISTING_STATE_DRAFT,
@@ -21,6 +19,7 @@ import {
   LISTING_PAGE_PARAM_TYPE_DRAFT,
   LISTING_PAGE_PARAM_TYPE_EDIT,
   createSlug,
+  createListingURL,
 } from '../../util/urlHelpers';
 import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
 import config from '../../config';
@@ -62,35 +61,6 @@ const priceData = (price, intl) => {
   return {};
 };
 
-const createListingURL = (routes, listing) => {
-  const id = listing.id.uuid;
-  const slug = createSlug(listing.attributes.title);
-  const isPendingApproval = listing.attributes.state === LISTING_STATE_PENDING_APPROVAL;
-  const isDraft = listing.attributes.state === LISTING_STATE_DRAFT;
-  const variant = isDraft
-    ? LISTING_PAGE_DRAFT_VARIANT
-    : isPendingApproval
-    ? LISTING_PAGE_PENDING_APPROVAL_VARIANT
-    : null;
-
-  const linkProps =
-    isPendingApproval || isDraft
-      ? {
-          name: 'ListingPageVariant',
-          params: {
-            id,
-            slug,
-            variant,
-          },
-        }
-      : {
-          name: 'ListingPage',
-          params: { id, slug },
-        };
-
-  return createResourceLocatorString(linkProps.name, routes, linkProps.params, {});
-};
-
 // Cards are not fixed sizes - So, long words in title make flexboxed items to grow too big.
 // 1. We split title to an array of words and spaces.
 //    "foo bar".split(/([^\s]+)/gi) => ["", "foo", " ", "bar", ""]
@@ -128,7 +98,8 @@ export const ManageListingCardComponent = props => {
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
   const id = currentListing.id.uuid;
-  const { title = '', price, state } = currentListing.attributes;
+  const { title = '', price, state, publicData } = currentListing.attributes;
+  const { pricingOption } = publicData;
   const slug = createSlug(title);
   const isPendingApproval = state === LISTING_STATE_PENDING_APPROVAL;
   const isClosed = state === LISTING_STATE_CLOSED;
@@ -164,15 +135,14 @@ export const ManageListingCardComponent = props => {
     ? LISTING_PAGE_PARAM_TYPE_DRAFT
     : LISTING_PAGE_PARAM_TYPE_EDIT;
 
-  const unitType = config.bookingUnitType;
-  const isNightly = unitType === LINE_ITEM_NIGHT;
-  const isDaily = unitType === LINE_ITEM_DAY;
+  const isPackage = pricingOption === config.PACKAGE_PRICE;
+  const isHourly = pricingOption === config.HOURLY_PRICE;
 
-  const unitTranslationKey = isNightly
-    ? 'ManageListingCard.perNight'
-    : isDaily
-    ? 'ManageListingCard.perDay'
-    : 'ManageListingCard.perUnit';
+  const unitTranslationKey = isPackage
+    ? 'ProgramListingPage.perPackage'
+    : isHourly
+    ? 'ProgramListingPage.perHour'
+    : 'ProgramListingPage.perUnit';
 
   return (
     <div className={classes}>

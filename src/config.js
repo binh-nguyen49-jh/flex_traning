@@ -51,7 +51,7 @@ const bookingProcessAlias = 'flex-default-process/release-1';
 //
 // Note 2: Translations will use different translation keys for night, day or unit
 //         depending on the value chosen.
-const bookingUnitType = 'line-item/night';
+const bookingUnitType = 'line-item/day';
 
 // Should the application fetch available time slots (currently defined as
 // start and end dates) to be shown on listing page.
@@ -197,6 +197,22 @@ const maps = {
   },
 };
 
+const CUSTOM_HOUR = 'custom';
+const hoursChoices = [
+  { label: '2 hours', value: '2' },
+  { label: '4 hours', value: '4' },
+  { label: '8 hours', value: '8' },
+  { label: 'Custom hours', value: CUSTOM_HOUR },
+];
+const DEFAULT_HOUR = '2';
+
+const PACKAGE_PRICE = 'package';
+const HOURLY_PRICE = 'hourly';
+const pricingOption = [
+  { label: 'Package', value: PACKAGE_PRICE },
+  { label: 'Hourly', value: HOURLY_PRICE },
+];
+
 // NOTE: only expose configuration that should be visible in the
 // client side, don't add any server secrets in this file.
 const config = {
@@ -240,6 +256,12 @@ const config = {
   usingSSL,
   maps,
   custom,
+  hoursChoices,
+  CUSTOM_HOUR,
+  pricingOption,
+  PACKAGE_PRICE,
+  HOURLY_PRICE,
+  DEFAULT_HOUR,
 };
 
 export default config;

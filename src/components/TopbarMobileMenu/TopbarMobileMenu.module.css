@@ -26,6 +26,10 @@
   padding: 24px;
   background-color: var(--matterColorLight);
   box-shadow: var(--boxShadowTop);
+
+  display: flex;
+  flex-flow: column;
+  gap: 20px;
 }
 
 .avatar {
@@ -72,6 +76,7 @@
   margin-top: 0;
   margin-bottom: 11px;
 }
+
 .currentPageLink {
   color: var(--marketplaceColorDark);
 }
@@ -98,6 +103,7 @@
   margin-bottom: 24px;
   margin-top: var(--TopbarMobileMenu_topMargin);
 }
+
 .authenticationLinks {
   white-space: nowrap;
 }
@@ -107,6 +113,7 @@
   white-space: nowrap;
   color: var(--marketplaceColor);
 }
+
 .loginLink {
   text-decoration: none;
   white-space: nowrap;

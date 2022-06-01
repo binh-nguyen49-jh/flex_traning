@@ -1,19 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { string, func } from 'prop-types';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { lazyLoadWithDimensions } from '../../util/contextHelpers';
-import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, propTypes } from '../../util/types';
+import { propTypes } from '../../util/types';
 import { formatMoney } from '../../util/currency';
 import { ensureListing, ensureUser } from '../../util/data';
 import { richText } from '../../util/richText';
 import { createSlug } from '../../util/urlHelpers';
 import config from '../../config';
 import { NamedLink, ResponsiveImage } from '../../components';
-
+import { types as sdkTypes } from '../../util/sdkLoader';
 import css from './ListingCard.module.css';
+import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 
 const MIN_LENGTH_FOR_LONG_WORDS = 10;
+const { UUID } = sdkTypes;
 
 const priceData = (price, intl) => {
   if (price && price.currency === config.currency) {
@@ -33,7 +37,6 @@ const priceData = (price, intl) => {
   }
   return {};
 };
-
 class ListingImage extends Component {
   render() {
     return <ResponsiveImage {...this.props} />;
@@ -47,6 +50,7 @@ export const ListingCardComponent = props => {
   const currentListing = ensureListing(listing);
   const id = currentListing.id.uuid;
   const { title = '', price } = currentListing.attributes;
+
   const slug = createSlug(title);
   const author = ensureUser(listing.author);
   const authorName = author.attributes.profile.displayName;
@@ -54,19 +58,29 @@ export const ListingCardComponent = props => {
     currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
   const { formattedPrice, priceTitle } = priceData(price, intl);
+  const [unitTranslationKey, setUnitTranslationKey] = React.useState('ListingCard.perUnit');
 
-  const unitType = config.bookingUnitType;
-  const isNightly = unitType === LINE_ITEM_NIGHT;
-  const isDaily = unitType === LINE_ITEM_DAY;
+  useEffect(() => {
+    const { getListing } = props;
+    const uuid = new UUID(id);
+    const listingWithExtendedData = getListing(uuid);
+    const { publicData } = listingWithExtendedData?.attributes;
+    if (publicData) {
+      const { pricingOption } = publicData;
+      const isPackage = pricingOption === config.PACKAGE_PRICE;
+      const isHourly = pricingOption === config.HOURLY_PRICE;
+      const newUnitTranslationKey = isPackage
+        ? 'ListingCard.perPackage'
+        : isHourly
+        ? 'ListingCard.perHourly'
+        : 'ListingCard.perUnit';
 
-  const unitTranslationKey = isNightly
-    ? 'ListingCard.perNight'
-    : isDaily
-    ? 'ListingCard.perDay'
-    : 'ListingCard.perUnit';
+      setUnitTranslationKey(newUnitTranslationKey);
+    }
+  }, []);
 
   return (
-    <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
+    <NamedLink className={classes} name="ProgramListingPage" params={{ id, slug }}>
       <div
         className={css.threeToTwoWrapper}
         onMouseEnter={() => setActiveListing(currentListing.id)}
@@ -122,8 +136,26 @@ ListingCardComponent.propTypes = {
 
   // Responsive image sizes hint
   renderSizes: string,
-
   setActiveListing: func,
+
+  getListing: func.isRequired,
 };
 
-export default injectIntl(ListingCardComponent);
+const mapStateToProps = state => {
+  const getListing = id => {
+    const ref = { id, type: 'listing' };
+    const listings = getMarketplaceEntities(state, [ref]);
+    return listings.length === 1 ? listings[0] : null;
+  };
+  return {
+    getListing,
+  };
+};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    null
+  ),
+  injectIntl
+)(ListingCardComponent);
