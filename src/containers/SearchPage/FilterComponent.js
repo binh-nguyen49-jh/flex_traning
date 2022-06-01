@@ -6,6 +6,8 @@ import {
   SelectSingleFilter,
   SelectMultipleFilter,
 } from '../../components';
+import HoursFilter from '../../components/HoursFilter/HoursFilter';
+import TeachingLocationFilter from '../../components/TeachingLocationFilter/TeachingLocationFilter';
 
 /**
  * FilterComponent is used to map configured filter types
@@ -95,6 +97,33 @@ const FilterComponent = props => {
           {...rest}
         />
       );
+    case 'HoursFilter':
+      return (
+        <HoursFilter
+          id={componentId}
+          label={label}
+          queryParamNames={queryParamNames}
+          initialValues={initialValues(queryParamNames)}
+          onSubmit={getHandleChangedValueFn(useHistoryPush)}
+          {...config}
+          {...rest}
+        />
+      );
+
+    case 'TeachingLocationFilter': {
+      return (
+        <TeachingLocationFilter
+          id={componentId}
+          label={label}
+          name={name}
+          queryParamNames={queryParamNames}
+          initialValues={initialValues(queryParamNames)}
+          onSubmit={getHandleChangedValueFn(useHistoryPush)}
+          {...config}
+          {...rest}
+        />
+      );
+    }
     default:
       return null;
   }
