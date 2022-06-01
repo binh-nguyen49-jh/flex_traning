@@ -81,7 +81,7 @@ export const filters = [
     group: 'primary',
     // Note: KeywordFilter is fixed filter,
     // you can't change "queryParamNames: ['keywords'],"
-    queryParamNames: ['keywords'],
+    queryParamNames: [, 'keywords'],
     // NOTE: If you are ordering search results by distance
     // the keyword search can't be used at the same time.
     // You can turn on/off ordering by distance from config.js file.
@@ -92,8 +92,7 @@ export const filters = [
     label: 'Program Tags',
     type: 'KeywordFilter',
     group: 'secondary',
-    // Note: KeywordFilter is fixed filter,
-    queryParamNames: ['pub_programTags'],
+    queryParamNames: ['keywords'],
     config: {},
   },
   // {
