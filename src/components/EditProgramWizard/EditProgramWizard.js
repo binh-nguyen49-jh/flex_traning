@@ -20,11 +20,9 @@ import {
 import css from './EditProgramWizard.module.css';
 import EditProgramWizardTab, {
   AVAILABILITY,
-  FEATURES,
   GENERAL,
   LOCATION,
   PHOTOS,
-  POLICY,
   PRICING,
 } from './EditProgramWizardTab';
 
@@ -35,15 +33,7 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
-export const TABS = [
-  GENERAL,
-  // FEATURES,
-  // POLICY,
-  LOCATION,
-  PRICING,
-  ...availabilityMaybe,
-  PHOTOS,
-];
+export const TABS = [GENERAL, LOCATION, PRICING, ...availabilityMaybe, PHOTOS];
 
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
@@ -55,10 +45,6 @@ const tabLabel = (intl, tab) => {
   let key = null;
   if (tab === GENERAL) {
     key = 'EditProgramWizard.tabLabelGeneral';
-  } else if (tab === FEATURES) {
-    key = 'EditProgramWizard.tabLabelFeatures';
-  } else if (tab === POLICY) {
-    key = 'EditProgramWizard.tabLabelPolicy';
   } else if (tab === LOCATION) {
     key = 'EditProgramWizard.tabLabelLocation';
   } else if (tab === PRICING) {
@@ -94,10 +80,6 @@ const tabCompleted = (tab, listing) => {
   switch (tab) {
     case GENERAL:
       return !!(description && title);
-    case FEATURES:
-      return !!(publicData && publicData.amenities);
-    case POLICY:
-      return !!(publicData && typeof publicData.rules !== 'undefined');
     case LOCATION:
       return !!(
         publicData &&

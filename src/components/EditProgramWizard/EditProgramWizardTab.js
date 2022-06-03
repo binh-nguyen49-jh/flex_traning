@@ -1,11 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  EditListingAvailabilityPanel,
-  EditListingFeaturesPanel,
-  EditListingPhotosPanel,
-  EditListingPoliciesPanel,
-} from '..';
+import { EditListingAvailabilityPanel, EditListingPhotosPanel } from '..';
 import routeConfiguration from '../../routeConfiguration';
 import { ensureListing } from '../../util/data';
 import { intlShape } from '../../util/reactIntl';
@@ -22,14 +17,12 @@ import css from './EditProgramWizard.module.css';
 
 export const AVAILABILITY = 'availability';
 export const GENERAL = 'general';
-export const FEATURES = 'features';
-export const POLICY = 'policy';
 export const LOCATION = 'location';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
 
 // EditListingWizardTab component supports these tabs
-export const SUPPORTED_TABS = [GENERAL, FEATURES, POLICY, LOCATION, PRICING, AVAILABILITY, PHOTOS];
+export const SUPPORTED_TABS = [GENERAL, LOCATION, PRICING, AVAILABILITY, PHOTOS];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
   const nextTabIndex = marketplaceTabs.findIndex(s => s === tab) + 1;
@@ -155,34 +148,6 @@ const EditProgramWizardTab = props => {
       return (
         <EditProgramGeneralPanel
           {...panelProps(GENERAL)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
-          onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
-          }}
-        />
-      );
-    }
-    case FEATURES: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditProgramWizard.saveNewFeatures'
-        : 'EditProgramWizard.saveEditFeatures';
-      return (
-        <EditListingFeaturesPanel
-          {...panelProps(FEATURES)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
-          onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
-          }}
-        />
-      );
-    }
-    case POLICY: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditProgramWizard.saveNewPolicies'
-        : 'EditProgramWizard.saveEditPolicies';
-      return (
-        <EditListingPoliciesPanel
-          {...panelProps(POLICY)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
