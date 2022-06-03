@@ -292,7 +292,7 @@ EditProgramPageComponent.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const page = state.EditListingPage;
+  const page = state.EditProgramPage;
   const {
     getAccountLinkInProgress,
     getAccountLinkError,
