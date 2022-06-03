@@ -9,7 +9,14 @@ const SectionHoursMaybe = props => {
       <h2 className={css.hoursTitle}>
         <FormattedMessage id="ProgramListingPage.hoursTitle" />
       </h2>
-      <p className={css.hours}>{hours} hours</p>
+      <p className={css.hours}>
+        <FormattedMessage
+          id="ProgramListingPage.hours"
+          values={{
+            hours,
+          }}
+        />
+      </p>
     </div>
   ) : null;
 };
