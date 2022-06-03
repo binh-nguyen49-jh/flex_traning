@@ -53,16 +53,16 @@ const EditProgramPricingPanel = props => {
         limitedQuantity,
       }}
       onSubmit={values => {
-        const { pricingOption, price, limitedQuantity } = values;
+        const { pricingOption, price } = values;
+        const limitedQuantity =
+          pricingOption === config.PACKAGE_PRICE ? values.limitedQuantity : null;
         const updateValues = {
           price,
           publicData: {
             pricingOption,
+            limitedQuantity,
           },
         };
-        if (pricingOption === config.PACKAGE_PRICE) {
-          updateValues.publicData.limitedQuantity = limitedQuantity;
-        }
         onSubmit(updateValues);
       }}
       onChange={onChange}
