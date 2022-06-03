@@ -1,12 +1,12 @@
-import React from 'react';
 import loadable from '@loadable/component';
-import getPageDataLoadingAPI from './containers/pageDataLoadingAPI';
-import { NotFoundPage } from './containers';
-
+import React from 'react';
 // routeConfiguration needs to initialize containers first
 // Otherwise, components will import form container eventually and
 // at that point css bundling / imports will happen in wrong order.
 import { NamedRedirect } from './components';
+import { NotFoundPage } from './containers';
+import getPageDataLoadingAPI from './containers/pageDataLoadingAPI';
+
 
 const pageDataLoadingAPI = getPageDataLoadingAPI();
 
@@ -20,7 +20,7 @@ const EmailVerificationPage = loadable(() => import(/* webpackChunkName: "EmailV
 const InboxPage = loadable(() => import(/* webpackChunkName: "InboxPage" */ './containers/InboxPage/InboxPage'));
 const LandingPage = loadable(() => import(/* webpackChunkName: "LandingPage" */ './containers/LandingPage/LandingPage'));
 const ListingPage = loadable(() => import(/* webpackChunkName: "ListingPage" */ /* webpackPrefetch: true */ './containers/ListingPage/ListingPage'));
-const ProgramListingPage = loadable(() => import(/* webpackChunkName: "ProgramListingPage" */ /* webpackPrefetch: true */ './containers/ListingPage/ProgramListingPage'));
+const ProgramListingPage = loadable(() => import(/* webpackChunkName: "ProgramListingPage" */ /* webpackPrefetch: true */ './containers/ProgramListingPage/ProgramListingPage'));
 const ManageListingsPage = loadable(() => import(/* webpackChunkName: "ManageListingsPage" */ './containers/ManageListingsPage/ManageListingsPage'));
 const PasswordChangePage = loadable(() => import(/* webpackChunkName: "PasswordChangePage" */ './containers/PasswordChangePage/PasswordChangePage'));
 const PasswordRecoveryPage = loadable(() => import(/* webpackChunkName: "PasswordRecoveryPage" */ './containers/PasswordRecoveryPage/PasswordRecoveryPage'));

@@ -1,43 +1,43 @@
 import pick from 'lodash/pick';
 import moment from 'moment';
 import config from '../../config';
-import { types as sdkTypes } from '../../util/sdkLoader';
-import { storableError } from '../../util/errors';
 import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
+import { fetchCurrentUser, fetchCurrentUserHasOrdersSuccess } from '../../ducks/user.duck';
 import { transactionLineItems } from '../../util/api';
-import * as log from '../../util/log';
 import { denormalisedResponseEntities } from '../../util/data';
+import { storableError } from '../../util/errors';
+import * as log from '../../util/log';
+import { types as sdkTypes } from '../../util/sdkLoader';
 import { TRANSITION_ENQUIRE } from '../../util/transaction';
 import {
   LISTING_PAGE_DRAFT_VARIANT,
   LISTING_PAGE_PENDING_APPROVAL_VARIANT,
 } from '../../util/urlHelpers';
-import { fetchCurrentUser, fetchCurrentUserHasOrdersSuccess } from '../../ducks/user.duck';
 
 const { UUID } = sdkTypes;
 
 // ================ Action types ================ //
 
-export const SET_INITIAL_VALUES = 'app/ListingPage/SET_INITIAL_VALUES';
+export const SET_INITIAL_VALUES = 'app/ProgramListingPage/SET_INITIAL_VALUES';
 
-export const SHOW_LISTING_REQUEST = 'app/ListingPage/SHOW_LISTING_REQUEST';
-export const SHOW_LISTING_ERROR = 'app/ListingPage/SHOW_LISTING_ERROR';
+export const SHOW_LISTING_REQUEST = 'app/ProgramListingPage/SHOW_LISTING_REQUEST';
+export const SHOW_LISTING_ERROR = 'app/ProgramListingPage/SHOW_LISTING_ERROR';
 
-export const FETCH_REVIEWS_REQUEST = 'app/ListingPage/FETCH_REVIEWS_REQUEST';
-export const FETCH_REVIEWS_SUCCESS = 'app/ListingPage/FETCH_REVIEWS_SUCCESS';
-export const FETCH_REVIEWS_ERROR = 'app/ListingPage/FETCH_REVIEWS_ERROR';
+export const FETCH_REVIEWS_REQUEST = 'app/ProgramListingPage/FETCH_REVIEWS_REQUEST';
+export const FETCH_REVIEWS_SUCCESS = 'app/ProgramListingPage/FETCH_REVIEWS_SUCCESS';
+export const FETCH_REVIEWS_ERROR = 'app/ProgramListingPage/FETCH_REVIEWS_ERROR';
 
-export const FETCH_TIME_SLOTS_REQUEST = 'app/ListingPage/FETCH_TIME_SLOTS_REQUEST';
-export const FETCH_TIME_SLOTS_SUCCESS = 'app/ListingPage/FETCH_TIME_SLOTS_SUCCESS';
-export const FETCH_TIME_SLOTS_ERROR = 'app/ListingPage/FETCH_TIME_SLOTS_ERROR';
+export const FETCH_TIME_SLOTS_REQUEST = 'app/ProgramListingPage/FETCH_TIME_SLOTS_REQUEST';
+export const FETCH_TIME_SLOTS_SUCCESS = 'app/ProgramListingPage/FETCH_TIME_SLOTS_SUCCESS';
+export const FETCH_TIME_SLOTS_ERROR = 'app/ProgramListingPage/FETCH_TIME_SLOTS_ERROR';
 
-export const FETCH_LINE_ITEMS_REQUEST = 'app/ListingPage/FETCH_LINE_ITEMS_REQUEST';
-export const FETCH_LINE_ITEMS_SUCCESS = 'app/ListingPage/FETCH_LINE_ITEMS_SUCCESS';
-export const FETCH_LINE_ITEMS_ERROR = 'app/ListingPage/FETCH_LINE_ITEMS_ERROR';
+export const FETCH_LINE_ITEMS_REQUEST = 'app/ProgramListingPage/FETCH_LINE_ITEMS_REQUEST';
+export const FETCH_LINE_ITEMS_SUCCESS = 'app/ProgramListingPage/FETCH_LINE_ITEMS_SUCCESS';
+export const FETCH_LINE_ITEMS_ERROR = 'app/ProgramListingPage/FETCH_LINE_ITEMS_ERROR';
 
-export const SEND_ENQUIRY_REQUEST = 'app/ListingPage/SEND_ENQUIRY_REQUEST';
-export const SEND_ENQUIRY_SUCCESS = 'app/ListingPage/SEND_ENQUIRY_SUCCESS';
-export const SEND_ENQUIRY_ERROR = 'app/ListingPage/SEND_ENQUIRY_ERROR';
+export const SEND_ENQUIRY_REQUEST = 'app/ProgramListingPage/SEND_ENQUIRY_REQUEST';
+export const SEND_ENQUIRY_SUCCESS = 'app/ProgramListingPage/SEND_ENQUIRY_SUCCESS';
+export const SEND_ENQUIRY_ERROR = 'app/ProgramListingPage/SEND_ENQUIRY_ERROR';
 
 // ================ Reducer ================ //
 

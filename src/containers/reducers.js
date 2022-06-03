@@ -15,6 +15,7 @@ import PasswordResetPage from './PasswordResetPage/PasswordResetPage.duck';
 import PaymentMethodsPage from './PaymentMethodsPage/PaymentMethodsPage.duck';
 import ProfilePage from './ProfilePage/ProfilePage.duck';
 import ProfileSettingsPage from './ProfileSettingsPage/ProfileSettingsPage.duck';
+import ProgramListingPage from './ProgramListingPage/ProgramListingPage.duck';
 import SearchPage from './SearchPage/SearchPage.duck';
 import StripePayoutPage from './StripePayoutPage/StripePayoutPage.duck';
 import TransactionPage from './TransactionPage/TransactionPage.duck';
@@ -25,6 +26,7 @@ export {
   EditListingPage,
   InboxPage,
   ListingPage,
+  ProgramListingPage,
   ManageListingsPage,
   PasswordChangePage,
   PasswordRecoveryPage,

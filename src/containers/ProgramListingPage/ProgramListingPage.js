@@ -40,12 +40,12 @@ import {
   LISTING_PAGE_PARAM_TYPE_EDIT,
   LISTING_PAGE_PENDING_APPROVAL_VARIANT,
 } from '../../util/urlHelpers';
-import css from './ListingPage.module.css';
 import {
   fetchTransactionLineItems,
   sendEnquiry,
   setInitialValues,
 } from './ProgramListingPage.duck';
+import css from './ProgramListingPage.module.css';
 import SectionAvatar from './SectionAvatar';
 import SectionDescriptionMaybe from './SectionDescriptionMaybe';
 import SectionHostMaybe from './SectionHostMaybe';
@@ -58,7 +58,6 @@ import SectionReviews from './SectionReviews';
 import SectionRulesMaybe from './SectionRulesMaybe';
 import SectionTeachingLocationMaybe from './SectionTeachingLocation';
 
-const { Money } = sdkTypes;
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
 const { UUID } = sdkTypes;
@@ -587,7 +586,7 @@ const mapStateToProps = state => {
     fetchLineItemsInProgress,
     fetchLineItemsError,
     enquiryModalOpenForListingId,
-  } = state.ListingPage;
+  } = state.ProgramListingPage;
   const { currentUser } = state.user;
 
   const getListing = id => {
