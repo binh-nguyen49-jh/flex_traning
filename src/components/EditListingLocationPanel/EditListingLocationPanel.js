@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FormattedMessage } from '../../util/reactIntl';
-import { LISTING_STATE_DRAFT } from '../../util/types';
-import { ensureOwnListing } from '../../util/data';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { ListingLink } from '../../components';
 import { EditListingLocationForm } from '../../forms';
-
+import { ensureOwnListing } from '../../util/data';
+import { FormattedMessage } from '../../util/reactIntl';
+import { LISTING_STATE_DRAFT } from '../../util/types';
 import css from './EditListingLocationPanel.module.css';
 
 class EditListingLocationPanel extends Component {

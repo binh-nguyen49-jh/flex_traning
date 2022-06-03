@@ -1,33 +1,31 @@
-import React, { Component, useEffect } from 'react';
-import { array, bool, func, number, object, oneOf, shape, string } from 'prop-types';
-import { compose } from 'redux';
-import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import classNames from 'classnames';
+import { array, bool, func, number, object, oneOf, shape, string } from 'prop-types';
+import React, { Component, useEffect } from 'react';
+import { compose } from 'redux';
+import { Modal, NamedRedirect, StripeConnectAccountStatusBox, Tabs } from '../../components';
 import config from '../../config';
+import { StripeConnectAccountForm } from '../../forms';
 import routeConfiguration from '../../routeConfiguration';
-import { createResourceLocatorString } from '../../util/routes';
 import { withViewport } from '../../util/contextHelpers';
+import { ensureCurrentUser, ensureListing } from '../../util/data';
+import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
+import { createResourceLocatorString } from '../../util/routes';
 import { propTypes } from '../../util/types';
 import {
+  LISTING_PAGE_PARAM_TYPES,
   LISTING_PAGE_PARAM_TYPE_DRAFT,
   LISTING_PAGE_PARAM_TYPE_NEW,
-  LISTING_PAGE_PARAM_TYPES,
 } from '../../util/urlHelpers';
-import { ensureCurrentUser, ensureListing } from '../../util/data';
-
-import { Modal, NamedRedirect, Tabs, StripeConnectAccountStatusBox } from '../../components';
-import { StripeConnectAccountForm } from '../../forms';
-
+import css from './EditListingWizard.module.css';
 import EditListingWizardTab, {
   AVAILABILITY,
   DESCRIPTION,
   FEATURES,
-  POLICY,
   LOCATION,
-  PRICING,
   PHOTOS,
+  POLICY,
+  PRICING,
 } from './EditListingWizardTab';
-import css from './EditListingWizard.module.css';
 
 // Show availability calendar only if environment variable availabilityEnabled is true
 const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];

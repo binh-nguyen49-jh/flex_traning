@@ -1,34 +1,32 @@
-import React, { Component, useEffect } from 'react';
-import { array, bool, func, number, object, oneOf, shape, string } from 'prop-types';
-import { compose } from 'redux';
-import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import classNames from 'classnames';
+import { array, bool, func, number, object, oneOf, shape, string } from 'prop-types';
+import React, { Component, useEffect } from 'react';
+import { compose } from 'redux';
+import { Modal, NamedRedirect, StripeConnectAccountStatusBox, Tabs } from '..';
 import config from '../../config';
+import { StripeConnectAccountForm } from '../../forms';
+import { ONLINE } from '../../marketplace-custom-config';
 import routeConfiguration from '../../routeConfiguration';
-import { createResourceLocatorString } from '../../util/routes';
 import { withViewport } from '../../util/contextHelpers';
+import { ensureCurrentUser, ensureListing } from '../../util/data';
+import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
+import { createResourceLocatorString } from '../../util/routes';
 import { propTypes } from '../../util/types';
 import {
+  LISTING_PAGE_PARAM_TYPES,
   LISTING_PAGE_PARAM_TYPE_DRAFT,
   LISTING_PAGE_PARAM_TYPE_NEW,
-  LISTING_PAGE_PARAM_TYPES,
 } from '../../util/urlHelpers';
-import { ensureCurrentUser, ensureListing } from '../../util/data';
-
-import { Modal, NamedRedirect, Tabs, StripeConnectAccountStatusBox } from '..';
-import { StripeConnectAccountForm } from '../../forms';
-
+import css from './EditProgramWizard.module.css';
 import EditProgramWizardTab, {
   AVAILABILITY,
-  GENERAL,
   FEATURES,
-  POLICY,
+  GENERAL,
   LOCATION,
-  PRICING,
   PHOTOS,
+  POLICY,
+  PRICING,
 } from './EditProgramWizardTab';
-import css from './EditProgramWizard.module.css';
-import { ONLINE } from '../../marketplace-custom-config';
 
 // Show availability calendar only if environment variable availabilityEnabled is true
 const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];

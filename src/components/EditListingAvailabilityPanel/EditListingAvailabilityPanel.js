@@ -1,12 +1,11 @@
-import React from 'react';
-import { bool, func, object, shape, string } from 'prop-types';
 import classNames from 'classnames';
-import { FormattedMessage } from '../../util/reactIntl';
-import { ensureOwnListing } from '../../util/data';
-import { LISTING_STATE_DRAFT } from '../../util/types';
+import { bool, func, object, shape, string } from 'prop-types';
+import React from 'react';
 import { ListingLink } from '../../components';
 import { EditListingAvailabilityForm } from '../../forms';
-
+import { ensureOwnListing } from '../../util/data';
+import { FormattedMessage } from '../../util/reactIntl';
+import { LISTING_STATE_DRAFT } from '../../util/types';
 import css from './EditListingAvailabilityPanel.module.css';
 
 const EditListingAvailabilityPanel = props => {

@@ -1,15 +1,14 @@
-import React from 'react';
-import { bool, func, object, string } from 'prop-types';
 import classNames from 'classnames';
-import { FormattedMessage } from '../../util/reactIntl';
-import { ensureOwnListing } from '../../util/data';
-import { findOptionsForSelectFilter } from '../../util/search';
-import { LISTING_STATE_DRAFT } from '../../util/types';
+import { bool, func, object, string } from 'prop-types';
+import React from 'react';
 import { ListingLink } from '..';
 import config from '../../config';
-
-import css from './EditProgramGeneralPanel.module.css';
 import EditProgramGeneralForm from '../../forms/EditProgramGeneralForm/EditProgramGeneralForm';
+import { ensureOwnListing } from '../../util/data';
+import { FormattedMessage } from '../../util/reactIntl';
+import { findOptionsForSelectFilter } from '../../util/search';
+import { LISTING_STATE_DRAFT } from '../../util/types';
+import css from './EditProgramGeneralPanel.module.css';
 
 const EditProgramGeneralPanel = props => {
   const {
@@ -45,6 +44,9 @@ const EditProgramGeneralPanel = props => {
     config.custom.filters
   );
 
+  const { programTags, programDifficulties, isCustomHour, hours } = publicData;
+  const { CUSTOM_HOUR, DEFAULT_HOUR } = config;
+
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
@@ -53,13 +55,11 @@ const EditProgramGeneralPanel = props => {
         initialValues={{
           title,
           description,
-          programTags: publicData.programTags,
-          programDifficulties: publicData.programDifficulties,
-          isCustomHour: !!publicData.isCustomHour,
-          customHours: publicData.hours || config.DEFAULT_HOUR,
-          hoursChoices: publicData.isCustomHour
-            ? config.CUSTOM_HOUR
-            : publicData.hours || config.DEFAULT_HOUR,
+          programTags: programTags,
+          programDifficulties: programDifficulties,
+          isCustomHour: !!isCustomHour,
+          customHours: hours || DEFAULT_HOUR,
+          hoursChoices: isCustomHour ? CUSTOM_HOUR : hours || DEFAULT_HOUR,
         }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
@@ -71,7 +71,7 @@ const EditProgramGeneralPanel = props => {
             hoursChoices,
             customHours,
           } = values;
-          const isCustomHour = hoursChoices === config.CUSTOM_HOUR;
+          const isCustomHour = hoursChoices === CUSTOM_HOUR;
           const updateValues = {
             title: title.trim(),
             description,

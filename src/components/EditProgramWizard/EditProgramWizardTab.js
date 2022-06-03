@@ -1,26 +1,24 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { intlShape } from '../../util/reactIntl';
-import routeConfiguration from '../../routeConfiguration';
-import {
-  LISTING_PAGE_PARAM_TYPE_DRAFT,
-  LISTING_PAGE_PARAM_TYPE_NEW,
-  LISTING_PAGE_PARAM_TYPES,
-} from '../../util/urlHelpers';
-import { ensureListing } from '../../util/data';
-import { createResourceLocatorString } from '../../util/routes';
+import React from 'react';
 import {
   EditListingAvailabilityPanel,
   EditListingFeaturesPanel,
   EditListingPhotosPanel,
   EditListingPoliciesPanel,
-  EditListingPricingPanel,
 } from '..';
-
-import css from './EditProgramWizard.module.css';
+import routeConfiguration from '../../routeConfiguration';
+import { ensureListing } from '../../util/data';
+import { intlShape } from '../../util/reactIntl';
+import { createResourceLocatorString } from '../../util/routes';
+import {
+  LISTING_PAGE_PARAM_TYPES,
+  LISTING_PAGE_PARAM_TYPE_DRAFT,
+  LISTING_PAGE_PARAM_TYPE_NEW,
+} from '../../util/urlHelpers';
 import EditProgramGeneralPanel from '../EditProgramGeneralPanel/EditProgramGeneralPanel';
 import EditProgramLocationPanel from '../EditProgramLocationPanel/EditProgramLocationPanel';
 import EditProgramPricingPanel from '../EditProgramPricingPanel/EditProgramPricingPanel';
+import css from './EditProgramWizard.module.css';
 
 export const AVAILABILITY = 'availability';
 export const GENERAL = 'general';

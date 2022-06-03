@@ -1,15 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FormattedMessage } from '../../util/reactIntl';
-import { LISTING_STATE_DRAFT } from '../../util/types';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { ListingLink } from '..';
-import { ensureOwnListing } from '../../util/data';
-import { types as sdkTypes } from '../../util/sdkLoader';
 import config from '../../config';
-
-import css from './EditProgramPricingPanel.module.css';
 import EditProgramPricingForm from '../../forms/EditProgramPricingForm/EditProgramPricingForm';
+import { ensureOwnListing } from '../../util/data';
+import { FormattedMessage } from '../../util/reactIntl';
+import { types as sdkTypes } from '../../util/sdkLoader';
+import { LISTING_STATE_DRAFT } from '../../util/types';
+import css from './EditProgramPricingPanel.module.css';
 
 const { Money } = sdkTypes;
 

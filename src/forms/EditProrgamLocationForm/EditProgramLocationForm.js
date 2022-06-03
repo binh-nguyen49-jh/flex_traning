@@ -1,29 +1,27 @@
-import React, { useState } from 'react';
-import { bool, func, shape, string } from 'prop-types';
-import { compose } from 'redux';
-import { Form as FinalForm } from 'react-final-form';
-import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
-import { propTypes } from '../../util/types';
+import arrayMutators from 'final-form-arrays';
+import { bool, func, shape, string } from 'prop-types';
+import React, { useState } from 'react';
+import { Form as FinalForm } from 'react-final-form';
+import { compose } from 'redux';
 import {
-  autocompleteSearchRequired,
-  autocompletePlaceSelected,
-  composeValidators,
-} from '../../util/validators';
-import {
+  Button,
+  FieldCheckbox,
+  FieldTextInput,
   Form,
   LocationAutocompleteInputField,
-  Button,
-  FieldTextInput,
-  FieldCheckbox,
-  FieldCheckboxGroup,
 } from '../../components';
-
-import css from './EditProgramLocationForm.module.css';
-import { ONLINE, ONSITE } from '../../marketplace-custom-config';
-import { findOptionsForSelectFilter } from '../../util/search';
-import arrayMutators from 'final-form-arrays';
 import config from '../../config';
+import { ONLINE, ONSITE } from '../../marketplace-custom-config';
+import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
+import { findOptionsForSelectFilter } from '../../util/search';
+import { propTypes } from '../../util/types';
+import {
+  autocompletePlaceSelected,
+  autocompleteSearchRequired,
+  composeValidators,
+} from '../../util/validators';
+import css from './EditProgramLocationForm.module.css';
 
 const identity = v => v;
 
