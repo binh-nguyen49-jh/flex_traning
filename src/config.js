@@ -1,7 +1,7 @@
-import * as custom from './marketplace-custom-config.js';
-import defaultLocationSearches from './default-location-searches';
-import { defaultMCC, stripePublishableKey, stripeCountryDetails } from './stripe-config';
 import { currencyConfiguration } from './currency-config';
+import defaultLocationSearches from './default-location-searches';
+import * as custom from './marketplace-custom-config.js';
+import { defaultMCC, stripeCountryDetails, stripePublishableKey } from './stripe-config';
 
 const env = process.env.REACT_APP_ENV;
 const dev = process.env.REACT_APP_ENV === 'development';
@@ -196,22 +196,6 @@ const maps = {
     anchorY: 32,
   },
 };
-
-const CUSTOM_HOUR = 'custom';
-const hoursChoices = [
-  { label: '2 hours', value: '2' },
-  { label: '4 hours', value: '4' },
-  { label: '8 hours', value: '8' },
-  { label: 'Custom hours', value: CUSTOM_HOUR },
-];
-const DEFAULT_HOUR = '2';
-
-const PACKAGE_PRICE = 'package';
-const HOURLY_PRICE = 'hourly';
-const pricingOption = [
-  { label: 'Package', value: PACKAGE_PRICE },
-  { label: 'Hourly', value: HOURLY_PRICE },
-];
 
 // NOTE: only expose configuration that should be visible in the
 // client side, don't add any server secrets in this file.

@@ -214,6 +214,22 @@ export const filters = [
   },
 ];
 
+export const CUSTOM_HOUR = 'custom';
+export const hoursChoices = [
+  { label: '2 hours', value: '2' },
+  { label: '4 hours', value: '4' },
+  { label: '8 hours', value: '8' },
+  { label: 'Custom hours', value: CUSTOM_HOUR },
+];
+export const DEFAULT_HOUR = '2';
+
+export const PACKAGE_PRICE = 'package';
+export const HOURLY_PRICE = 'hourly';
+export const pricingOption = [
+  { label: 'Package', value: PACKAGE_PRICE },
+  { label: 'Hourly', value: HOURLY_PRICE },
+];
+
 export const sortConfig = {
   // Enable/disable the sorting control in the SearchPage
   active: true,
