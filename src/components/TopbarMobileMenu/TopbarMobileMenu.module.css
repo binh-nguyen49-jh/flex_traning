@@ -26,7 +26,6 @@
   padding: 24px;
   background-color: var(--matterColorLight);
   box-shadow: var(--boxShadowTop);
-
   display: flex;
   flex-flow: column;
   gap: 20px;
