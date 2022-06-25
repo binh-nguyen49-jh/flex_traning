@@ -81,7 +81,7 @@ class EditProgramLocationPanel extends Component {
           initialValues={this.state.initialValues}
           onSubmit={values => {
             const { teachingForm, building = '', location } = values;
-            if (teachingForm.includes(ONSITE)) {
+            if (teachingForm?.includes(ONSITE)) {
               const {
                 selectedPlace: { address, origin },
               } = location;
