@@ -181,7 +181,6 @@
   "EditListingDescriptionForm.updateFailed": "Failed to update listing. Please try again.",
   "EditListingDescriptionPanel.createListingTitle": "Add your sauna",
   "EditListingDescriptionPanel.title": "Edit details of {listingTitle}",
-
   "EditProgramGeneralForm.categoryLabel": "program type",
   "EditProgramGeneralForm.categoryPlaceholder": "Choose the type of your program…",
   "EditProgramGeneralForm.categoryRequired": "You need to select a category for your program.",
@@ -310,7 +309,6 @@
   "EditListingWizard.tabLabelPhotos": "Photos",
   "EditListingWizard.tabLabelPolicy": "Sauna rules",
   "EditListingWizard.tabLabelPricing": "Pricing",
-  
   "EditProgramWizard.payoutModalInfo": "Almost done! In order to send you money, we need to know a bit more about you. Next, we will guide you through verifying your account. The details can also be edited from Account Setting page on Payout details tab. ",
   "EditProgramWizard.payoutModalTitleOneMoreThing": "One more thing:",
   "EditProgramWizard.payoutModalTitlePayoutPreferences": "Payout preferences",
