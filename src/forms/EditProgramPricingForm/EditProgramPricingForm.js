@@ -1,15 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { bool, func, shape, string } from 'prop-types';
-import { compose } from 'redux';
-import { Form as FinalForm, FormSpy } from 'react-final-form';
-import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
+import { bool, func, shape, string } from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
+import { Form as FinalForm, FormSpy } from 'react-final-form';
+import { compose } from 'redux';
+import { Button, FieldCurrencyInput, FieldSelect, FieldTextInput, Form } from '../../components';
 import config from '../../config';
-import { propTypes } from '../../util/types';
 import { formatMoney } from '../../util/currency';
+import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import { Button, Form, FieldCurrencyInput, FieldSelect, FieldTextInput } from '../../components';
-import css from './EditProgramPricingForm.module.css';
+import { propTypes } from '../../util/types';
 import {
   composeValidators,
   isPositiveNumber,
@@ -17,12 +16,13 @@ import {
   required,
   validNumber,
 } from '../../util/validators';
+import css from './EditProgramPricingForm.module.css';
 
 const { Money } = sdkTypes;
 
 export const EditProgramPricingFormComponent = props => {
   const { initialValues } = props;
-  const { pricingOption, PACKAGE_PRICE, HOURLY_PRICE } = config;
+  const { pricingOption, PACKAGE_PRICE, HOURLY_PRICE, DEFAULT_HOUR } = config;
   const [priceOption, setPriceOption] = useState(initialValues?.pricingOption);
   const [totalPrice, setTotalPrice] = useState(
     initialValues.price || new Money(0, config.currency)
@@ -33,7 +33,7 @@ export const EditProgramPricingFormComponent = props => {
     firstRender.current = false;
   }, []);
 
-  const hours = (initialValues && initialValues.hours) || 1;
+  const hours = (initialValues && initialValues.hours) || parseInt(DEFAULT_HOUR);
 
   return (
     <FinalForm
