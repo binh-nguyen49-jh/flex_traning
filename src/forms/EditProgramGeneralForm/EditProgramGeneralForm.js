@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
-import { arrayOf, bool, func, shape, string } from 'prop-types';
-import { compose } from 'redux';
-import { Form as FinalForm } from 'react-final-form';
-import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import arrayMutators from 'final-form-arrays';
+import { bool, func, shape, string } from 'prop-types';
+import React, { useState } from 'react';
+import { Form as FinalForm } from 'react-final-form';
+import { compose } from 'redux';
+import { Button, FieldCheckboxGroup, FieldSelect, FieldTextInput, Form } from '../../components';
+import config from '../../config';
+import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
 import {
+  composeValidators,
+  isPositiveNumber,
   maxLength,
   required,
-  composeValidators,
   requiredFieldArrayCheckbox,
   validNumber,
 } from '../../util/validators';
-import { Form, Button, FieldTextInput, FieldCheckboxGroup, FieldSelect } from '../../components';
-import config from '../../config';
 import css from './EditProgramGeneralForm.module.css';
 
 const TITLE_MAX_LENGTH = 60;
@@ -81,6 +82,9 @@ const EditProgramGeneralFormComponent = props => {
         });
         const hoursNumber = intl.formatMessage({
           id: 'EditProgramGeneralForm.hoursNumber',
+        });
+        const hoursPositiveNumberMessage = intl.formatMessage({
+          id: 'EditProgramGeneralForm.hoursPositiveNumber',
         });
 
         const programTagsMessage = intl.formatMessage({
@@ -190,7 +194,8 @@ const EditProgramGeneralFormComponent = props => {
                 placeholder={hoursPlaceholderMessage}
                 validate={composeValidators(
                   validNumber(hoursNumber),
-                  required(hoursRequiredMessage)
+                  required(hoursRequiredMessage),
+                  isPositiveNumber(hoursPositiveNumberMessage)
                 )}
               />
             )}
@@ -226,12 +231,6 @@ EditProgramGeneralFormComponent.propTypes = {
     showListingsError: propTypes.error,
     updateListingError: propTypes.error,
   }),
-  categories: arrayOf(
-    shape({
-      key: string.isRequired,
-      label: string.isRequired,
-    })
-  ),
 };
 
 export default compose(injectIntl)(EditProgramGeneralFormComponent);
