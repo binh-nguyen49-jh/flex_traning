@@ -154,6 +154,15 @@ export const validBusinessURL = message => value => {
   return invalidCharacters || invalidProtocol || isExampleDotCom || isLocalhost ? message : VALID;
 };
 
+export const validNumber = message => value => {
+  return parseNum(value) ? VALID : message;
+};
+
+export const isPositiveNumber = message => value => {
+  const num = parseNum(value);
+  return num !== null && num >= 0 ? VALID : message;
+};
+
 export const validSsnLast4 = message => value => {
   return value.length === 4 ? VALID : message;
 };

@@ -32,6 +32,8 @@
  *         and tie them with correct extended data key
  *         (i.e. pub_<key> or meta_<key>).
  */
+export const ONSITE = 'on-site';
+export const ONLINE = 'online';
 
 export const filters = [
   {
@@ -71,6 +73,15 @@ export const filters = [
     // NOTE: If you are ordering search results by distance
     // the keyword search can't be used at the same time.
     // You can turn on/off ordering by distance from config.js file.
+    config: {},
+  },
+  {
+    id: 'programTags',
+    label: 'Program Tags',
+    type: 'KeywordFilter',
+    group: 'secondary',
+    // Note: KeywordFilter is fixed filter,
+    queryParamNames: ['programTags'],
     config: {},
   },
   {
@@ -143,6 +154,80 @@ export const filters = [
       ],
     },
   },
+  {
+    id: 'programDifficulties',
+    label: 'Program Difficulties',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['programDifficulties'],
+    config: {
+      // Optional modes: 'has_all', 'has_any'
+      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
+      searchMode: 'has_any',
+
+      // "key" is the option you see in Flex Console.
+      // "label" is set here for this web app's UI only.
+      // Note: label is not added through the translation files
+      // to make filter customizations a bit easier.
+      options: [
+        {
+          key: 'beginner',
+          label: 'Beginner',
+        },
+        {
+          key: 'intermediate',
+          label: 'Intermediate',
+        },
+        {
+          key: 'expert',
+          label: 'Expert',
+        },
+      ],
+    },
+  },
+  {
+    id: 'teachingForm',
+    label: 'Teaching Form',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['teachingForm'],
+    config: {
+      // Optional modes: 'has_all', 'has_any'
+      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
+      searchMode: 'has_all',
+
+      // "key" is the option you see in Flex Console.
+      // "label" is set here for this web app's UI only.
+      // Note: label is not added through the translation files
+      // to make filter customizations a bit easier.
+      options: [
+        {
+          key: ONSITE,
+          label: 'On-site',
+        },
+        {
+          key: ONLINE,
+          label: 'Online',
+        },
+      ],
+    },
+  },
+];
+
+export const CUSTOM_HOUR = 'custom';
+export const hoursChoices = [
+  { label: '2 hours', value: '2' },
+  { label: '4 hours', value: '4' },
+  { label: '8 hours', value: '8' },
+  { label: 'Custom hours', value: CUSTOM_HOUR },
+];
+export const DEFAULT_HOUR = '2';
+
+export const PACKAGE_PRICE = 'package';
+export const HOURLY_PRICE = 'hourly';
+export const pricingOption = [
+  { label: 'Package', value: PACKAGE_PRICE },
+  { label: 'Hourly', value: HOURLY_PRICE },
 ];
 
 export const sortConfig = {

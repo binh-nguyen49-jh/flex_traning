@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import autosize from 'autosize';
+import React, { Component } from 'react';
 
 class ExpandingTextarea extends Component {
   constructor(props) {

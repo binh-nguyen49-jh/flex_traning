@@ -28,6 +28,9 @@ const getPageDataLoadingAPI = () => {
     EditListingPage: {
       loadData: EditListingPageLoader,
     },
+    EditProgramPage: {
+      loadData: EditListingPageLoader,
+    },
     EmailVerificationPage: {
       loadData: EmailVerificationPageLoader,
     },
@@ -35,6 +38,9 @@ const getPageDataLoadingAPI = () => {
       loadData: InboxPageLoader,
     },
     ListingPage: {
+      loadData: ListingPageLoader,
+    },
+    ProgramListingPage: {
       loadData: ListingPageLoader,
     },
     ManageListingsPage: {

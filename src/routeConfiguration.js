@@ -1,12 +1,12 @@
-import React from 'react';
 import loadable from '@loadable/component';
-import getPageDataLoadingAPI from './containers/pageDataLoadingAPI';
-import { NotFoundPage } from './containers';
-
+import React from 'react';
 // routeConfiguration needs to initialize containers first
 // Otherwise, components will import form container eventually and
 // at that point css bundling / imports will happen in wrong order.
 import { NamedRedirect } from './components';
+import { NotFoundPage } from './containers';
+import getPageDataLoadingAPI from './containers/pageDataLoadingAPI';
+
 
 const pageDataLoadingAPI = getPageDataLoadingAPI();
 
@@ -15,10 +15,12 @@ const AuthenticationPage = loadable(() => import(/* webpackChunkName: "Authentic
 const CheckoutPage = loadable(() => import(/* webpackChunkName: "CheckoutPage" */ './containers/CheckoutPage/CheckoutPage'));
 const ContactDetailsPage = loadable(() => import(/* webpackChunkName: "ContactDetailsPage" */ './containers/ContactDetailsPage/ContactDetailsPage'));
 const EditListingPage = loadable(() => import(/* webpackChunkName: "EditListingPage" */ './containers/EditListingPage/EditListingPage'));
+const EditProgramPage = loadable(() => import(/* webpackChunkName: "EditProgramPage" */ './containers/EditProgramPage/EditProgramPage'));
 const EmailVerificationPage = loadable(() => import(/* webpackChunkName: "EmailVerificationPage" */ './containers/EmailVerificationPage/EmailVerificationPage'));
 const InboxPage = loadable(() => import(/* webpackChunkName: "InboxPage" */ './containers/InboxPage/InboxPage'));
 const LandingPage = loadable(() => import(/* webpackChunkName: "LandingPage" */ './containers/LandingPage/LandingPage'));
 const ListingPage = loadable(() => import(/* webpackChunkName: "ListingPage" */ /* webpackPrefetch: true */ './containers/ListingPage/ListingPage'));
+const ProgramListingPage = loadable(() => import(/* webpackChunkName: "ProgramListingPage" */ /* webpackPrefetch: true */ './containers/ProgramListingPage/ProgramListingPage'));
 const ManageListingsPage = loadable(() => import(/* webpackChunkName: "ManageListingsPage" */ './containers/ManageListingsPage/ManageListingsPage'));
 const PasswordChangePage = loadable(() => import(/* webpackChunkName: "PasswordChangePage" */ './containers/PasswordChangePage/PasswordChangePage'));
 const PasswordRecoveryPage = loadable(() => import(/* webpackChunkName: "PasswordRecoveryPage" */ './containers/PasswordRecoveryPage/PasswordRecoveryPage'));
@@ -125,7 +127,31 @@ const routeConfiguration = () => {
       component: EditListingPage,
       loadData: pageDataLoadingAPI.EditListingPage.loadData,
     },
-
+    {
+      path: '/p/new',
+      name: 'NewProgramPage',
+      auth: true,
+      component: () => (
+        <NamedRedirect
+          name="EditProgramPage"
+          params={{ slug: draftSlug, id: draftId, type: 'new', tab: 'general' }}
+        />
+      ),
+    },
+    {
+      path: '/p/:slug/:id/:type/:tab',
+      name: 'EditProgramPage',
+      auth: true,
+      component: EditProgramPage,
+      loadData: pageDataLoadingAPI.EditProgramPage.loadData,
+    },
+    {
+      path: '/p/:slug/:id/:type/:tab/:returnURLType',
+      name: 'EditProgramStripeOnboardingPage',
+      auth: true,
+      component: EditProgramPage,
+      loadData: pageDataLoadingAPI.EditProgramPage.loadData,
+    },
     // Canonical path should be after the `/l/new` path since they
     // conflict and `new` is not a valid listing UUID.
     {
@@ -133,6 +159,26 @@ const routeConfiguration = () => {
       name: 'ListingPageCanonical',
       component: ListingPage,
       loadData: pageDataLoadingAPI.ListingPage.loadData,
+    },
+    {
+      path: '/p/:slug/:id',
+      name: 'ProgramListingPage',
+      component: ProgramListingPage,
+      loadData: pageDataLoadingAPI.ProgramListingPage.loadData,
+    },
+    {
+      path: '/p/:id',
+      name: 'ProgramListingPageCanonical',
+      component: ProgramListingPage,
+      loadData: pageDataLoadingAPI.ProgramListingPage.loadData,
+    },
+     {
+      path: '/p/:slug/:id/:variant',
+      name: 'ProgramListingPageVariant',
+      auth: true,
+      authPage: 'LoginPage',
+      component: ProgramListingPage,
+      loadData: pageDataLoadingAPI.ProgramListingPage.loadData,
     },
     {
       path: '/u',
