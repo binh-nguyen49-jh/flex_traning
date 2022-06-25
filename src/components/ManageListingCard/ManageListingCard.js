@@ -1,43 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
-import routeConfiguration from '../../routeConfiguration';
+import React from 'react';
 import {
-  LINE_ITEM_NIGHT,
-  LINE_ITEM_DAY,
-  LISTING_STATE_PENDING_APPROVAL,
-  LISTING_STATE_CLOSED,
-  LISTING_STATE_DRAFT,
-  propTypes,
-} from '../../util/types';
-import { formatMoney } from '../../util/currency';
-import { ensureOwnListing } from '../../util/data';
-import {
-  LISTING_PAGE_PENDING_APPROVAL_VARIANT,
-  LISTING_PAGE_DRAFT_VARIANT,
-  LISTING_PAGE_PARAM_TYPE_DRAFT,
-  LISTING_PAGE_PARAM_TYPE_EDIT,
-  createSlug,
-} from '../../util/urlHelpers';
-import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
-import config from '../../config';
-import {
+  IconSpinner,
   InlineTextButton,
   Menu,
-  MenuLabel,
   MenuContent,
   MenuItem,
+  MenuLabel,
   NamedLink,
-  IconSpinner,
   ResponsiveImage,
 } from '../../components';
-
+import config from '../../config';
+import routeConfiguration from '../../routeConfiguration';
+import { formatMoney } from '../../util/currency';
+import { FormattedMessage } from '../../util/reactIntl';
+import { createResourceLocatorString } from '../../util/routes';
+import { LISTING_STATE_DRAFT, LISTING_STATE_PENDING_APPROVAL } from '../../util/types';
+import {
+  createSlug,
+  LISTING_PAGE_DRAFT_VARIANT,
+  LISTING_PAGE_PARAM_TYPE_DRAFT,
+  LISTING_PAGE_PENDING_APPROVAL_VARIANT,
+} from '../../util/urlHelpers';
+import css from './ManageListingCard.module.css';
 import MenuIcon from './MenuIcon';
 import Overlay from './Overlay';
-import css from './ManageListingCard.module.css';
 
 // Menu content needs the same padding
 const MENU_CONTENT_OFFSET = -12;
@@ -46,16 +33,27 @@ const MAX_LENGTH_FOR_WORDS_IN_TITLE = 7;
 const priceData = (price, intl) => {
   if (price && price.currency === config.currency) {
     const formattedPrice = formatMoney(intl, price);
-    return { formattedPrice, priceTitle: formattedPrice };
+    return {
+      formattedPrice,
+      priceTitle: formattedPrice,
+    };
   } else if (price) {
     return {
       formattedPrice: intl.formatMessage(
-        { id: 'ManageListingCard.unsupportedPrice' },
-        { currency: price.currency }
+        {
+          id: 'ManageListingCard.unsupportedPrice',
+        },
+        {
+          currency: price.currency,
+        }
       ),
       priceTitle: intl.formatMessage(
-        { id: 'ManageListingCard.unsupportedPriceTitle' },
-        { currency: price.currency }
+        {
+          id: 'ManageListingCard.unsupportedPriceTitle',
+        },
+        {
+          currency: price.currency,
+        }
       ),
     };
   }
@@ -64,31 +62,79 @@ const priceData = (price, intl) => {
 
 const createListingURL = (routes, listing) => {
   const id = listing.id.uuid;
-  const slug = createSlug(listing.attributes.title);
-  const isPendingApproval = listing.attributes.state === LISTING_STATE_PENDING_APPROVAL;
-  const isDraft = listing.attributes.state === LISTING_STATE_DRAFT;
+  const { publicData, title, state } = listing.attributes;
+  const slug = createSlug(title);
+  const isPendingApproval = state === LISTING_STATE_PENDING_APPROVAL;
+  const isDraft = state === LISTING_STATE_DRAFT;
   const variant = isDraft
     ? LISTING_PAGE_DRAFT_VARIANT
     : isPendingApproval
     ? LISTING_PAGE_PENDING_APPROVAL_VARIANT
     : null;
 
-  const linkProps =
-    isPendingApproval || isDraft
-      ? {
-          name: 'ProgramListingPageVariant',
-          params: {
-            id,
-            slug,
-            variant,
-          },
-        }
-      : {
-          name: 'ProgramListingPage',
-          params: { id, slug },
-        };
+  const isProgramListing = publicData && publicData.programTags;
 
+  const mapLinkProps = [
+    {
+      name: 'ListingPage',
+      params: {
+        id,
+        slug,
+      },
+    },
+    {
+      name: 'ListingPageVariant',
+      params: {
+        id,
+        slug,
+        variant,
+      },
+    },
+    {
+      name: 'ProgramListingPage',
+      params: {
+        id,
+        slug,
+      },
+    },
+    {
+      name: 'ProgramListingPageVariant',
+      params: {
+        id,
+        slug,
+        variant,
+      },
+    },
+  ];
+  // Conditions for mapping are represented as 2 bit
+  const linkProps = mapLinkProps[(isProgramListing << 1) + (isPendingApproval || isDraft)];
   return createResourceLocatorString(linkProps.name, routes, linkProps.params, {});
+};
+
+const getUnitTranslationKey = listing => {
+  const { publicData } = listing.attributes;
+
+  const { pricingOption } = publicData;
+  const isPackage = pricingOption === config.PACKAGE_PRICE;
+  const isHourly = pricingOption === config.HOURLY_PRICE;
+  const isProgramListing = publicData && publicData.programTags;
+  const unitType = config.bookingUnitType;
+  const isNightly = unitType === LINE_ITEM_NIGHT;
+  const isDaily = unitType === LINE_ITEM_DAY;
+  // TODO : add program listing page to en
+  if (isProgramListing) {
+    return isPackage
+      ? 'ProgramListingPage.perPackage'
+      : isHourly
+      ? 'ProgramListingPage.perHour'
+      : 'ProgramListingPage.perUnit';
+  } else {
+    return isNightly
+      ? 'ManageListingCard.perNight'
+      : isDaily
+      ? 'ManageListingCard.perDay'
+      : 'ManageListingCard.perUnit';
+  }
 };
 
 // Cards are not fixed sizes - So, long words in title make flexboxed items to grow too big.
@@ -99,7 +145,12 @@ const formatTitle = (title, maxLength) => {
   const nonWhiteSpaceSequence = /([^\s]+)/gi;
   return title.split(nonWhiteSpaceSequence).map((word, index) => {
     return word.length > maxLength ? (
-      <span key={index} style={{ wordBreak: 'break-all' }}>
+      <span
+        key={index}
+        style={{
+          wordBreak: 'break-all',
+        }}
+      >
         {word}
       </span>
     ) : (
@@ -128,8 +179,7 @@ export const ManageListingCardComponent = props => {
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
   const id = currentListing.id.uuid;
-  const { title = '', price, state, publicData } = currentListing.attributes;
-  const { pricingOption } = publicData;
+  const { title = '', price, state } = currentListing.attributes;
   const slug = createSlug(title);
   const isPendingApproval = state === LISTING_STATE_PENDING_APPROVAL;
   const isClosed = state === LISTING_STATE_CLOSED;
@@ -165,14 +215,7 @@ export const ManageListingCardComponent = props => {
     ? LISTING_PAGE_PARAM_TYPE_DRAFT
     : LISTING_PAGE_PARAM_TYPE_EDIT;
 
-  const isPackage = pricingOption === config.PACKAGE_PRICE;
-  const isHourly = pricingOption === config.HOURLY_PRICE;
-
-  const unitTranslationKey = isPackage
-    ? 'ProgramListingPage.perPackage'
-    : isHourly
-    ? 'ProgramListingPage.perHour'
-    : 'ProgramListingPage.perUnit';
+  const unitTranslationKey = getUnitTranslationKey(currentListing);
 
   return (
     <div className={classes}>
@@ -202,7 +245,11 @@ export const ManageListingCardComponent = props => {
             sizes={renderSizes}
           />
         </div>
-        <div className={classNames(css.menuOverlayWrapper, { [css.menuOverlayOpen]: isMenuOpen })}>
+        <div
+          className={classNames(css.menuOverlayWrapper, {
+            [css.menuOverlayOpen]: isMenuOpen,
+          })}
+        >
           <div className={classNames(css.menuOverlay)} />
           <div className={css.menuOverlayContent}>
             <FormattedMessage id="ManageListingCard.viewListing" />
@@ -212,7 +259,9 @@ export const ManageListingCardComponent = props => {
           <div className={css.menubarGradient} />
           <div className={css.menubar}>
             <Menu
-              className={classNames(css.menu, { [css.cardIsOpen]: !isClosed })}
+              className={classNames(css.menu, {
+                [css.cardIsOpen]: !isClosed,
+              })}
               contentPlacementOffset={MENU_CONTENT_OFFSET}
               contentPosition="left"
               useArrow={false}
@@ -249,17 +298,30 @@ export const ManageListingCardComponent = props => {
         </div>
         {isDraft ? (
           <React.Fragment>
-            <div className={classNames({ [css.draftNoImage]: !firstImage })} />
+            <div
+              className={classNames({
+                [css.draftNoImage]: !firstImage,
+              })}
+            />
             <Overlay
               message={intl.formatMessage(
-                { id: 'ManageListingCard.draftOverlayText' },
-                { listingTitle: title }
+                {
+                  id: 'ManageListingCard.draftOverlayText',
+                },
+                {
+                  listingTitle: title,
+                }
               )}
             >
               <NamedLink
                 className={css.finishListingDraftLink}
                 name="EditListingPage"
-                params={{ id, slug, type: LISTING_PAGE_PARAM_TYPE_DRAFT, tab: 'photos' }}
+                params={{
+                  id,
+                  slug,
+                  type: LISTING_PAGE_PARAM_TYPE_DRAFT,
+                  tab: 'photos',
+                }}
               >
                 <FormattedMessage id="ManageListingCard.finishListingDraft" />
               </NamedLink>
@@ -269,8 +331,12 @@ export const ManageListingCardComponent = props => {
         {isClosed ? (
           <Overlay
             message={intl.formatMessage(
-              { id: 'ManageListingCard.closedListing' },
-              { listingTitle: title }
+              {
+                id: 'ManageListingCard.closedListing',
+              },
+              {
+                listingTitle: title,
+              }
             )}
           >
             <button
@@ -291,8 +357,12 @@ export const ManageListingCardComponent = props => {
         {isPendingApproval ? (
           <Overlay
             message={intl.formatMessage(
-              { id: 'ManageListingCard.pendingApproval' },
-              { listingTitle: title }
+              {
+                id: 'ManageListingCard.pendingApproval',
+              },
+              {
+                listingTitle: title,
+              }
             )}
           />
         ) : null}
@@ -301,10 +371,13 @@ export const ManageListingCardComponent = props => {
             <IconSpinner />
           </Overlay>
         ) : hasError ? (
-          <Overlay errorMessage={intl.formatMessage({ id: 'ManageListingCard.actionFailed' })} />
+          <Overlay
+            errorMessage={intl.formatMessage({
+              id: 'ManageListingCard.actionFailed',
+            })}
+          />
         ) : null}
       </div>
-
       <div className={css.info}>
         <div className={css.price}>
           {formattedPrice ? (
@@ -322,7 +395,6 @@ export const ManageListingCardComponent = props => {
             </div>
           )}
         </div>
-
         <div className={css.mainInfo}>
           <div className={css.titleWrapper}>
             <InlineTextButton
@@ -337,24 +409,31 @@ export const ManageListingCardComponent = props => {
             </InlineTextButton>
           </div>
         </div>
-
         <div className={css.manageLinks}>
           <NamedLink
             className={css.manageLink}
             name="EditListingPage"
-            params={{ id, slug, type: editListingLinkType, tab: 'description' }}
+            params={{
+              id,
+              slug,
+              type: editListingLinkType,
+              tab: 'description',
+            }}
           >
             <FormattedMessage id="ManageListingCard.editListing" />
           </NamedLink>
-
           {availabilityEnabled ? (
             <React.Fragment>
-              <span className={css.manageLinksSeparator}>{' • '}</span>
-
+              <span className={css.manageLinksSeparator}> {' • '} </span>
               <NamedLink
                 className={css.manageLink}
                 name="EditListingPage"
-                params={{ id, slug, type: editListingLinkType, tab: 'availability' }}
+                params={{
+                  id,
+                  slug,
+                  type: editListingLinkType,
+                  tab: 'availability',
+                }}
               >
                 <FormattedMessage id="ManageListingCard.manageAvailability" />
               </NamedLink>
@@ -384,7 +463,9 @@ ManageListingCardComponent.propTypes = {
   intl: intlShape.isRequired,
   listing: propTypes.ownListing.isRequired,
   isMenuOpen: bool.isRequired,
-  actionsInProgressListingId: shape({ uuid: string.isRequired }),
+  actionsInProgressListingId: shape({
+    uuid: string.isRequired,
+  }),
   onCloseListing: func.isRequired,
   onOpenListing: func.isRequired,
   onToggleMenu: func.isRequired,
