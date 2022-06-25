@@ -127,7 +127,6 @@ const routeConfiguration = () => {
       component: EditListingPage,
       loadData: pageDataLoadingAPI.EditListingPage.loadData,
     },
-
     {
       path: '/p/new',
       name: 'NewProgramPage',
@@ -148,12 +147,11 @@ const routeConfiguration = () => {
     },
     {
       path: '/p/:slug/:id/:type/:tab/:returnURLType',
-      name: 'EditListingStripeOnboardingPage',
+      name: 'EditProgramStripeOnboardingPage',
       auth: true,
       component: EditProgramPage,
       loadData: pageDataLoadingAPI.EditProgramPage.loadData,
     },
-
     // Canonical path should be after the `/l/new` path since they
     // conflict and `new` is not a valid listing UUID.
     {
